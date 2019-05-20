@@ -1,16 +1,40 @@
 import {think} from 'thinkjs';
 
 export default class extends think.Logic {
-    indexAction():void {
+    indexAction(): void {
     }
-    addTypeAction():void {
+    addTypeAction(): void {
         this.allowMethods = 'post';
-        const rules: object = {
+        this.rules = {
             name: {
-                string: true,
-                required: true
+                required: true,
+                string: true
             }
         };
-        let flag = this.validate(rules);
+    }
+    modTypeAction(): void {
+        this.allowMethods = 'post';
+        this.rules = {
+            name: {
+                required: true,
+                string: true
+            },
+            id: {
+                required: true,
+                number: true
+            }
+        };
+    }
+    delTypeAction(): void {
+        this.allowMethods = 'post';
+        this.rules = {
+            id: {
+                required: true,
+                number: true
+            }
+        };
+    }
+    getTypeAction(): void {
+        this.allowMethods = 'post';
     }
 }

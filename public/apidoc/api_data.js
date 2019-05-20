@@ -1,66 +1,1 @@
-define({ "api": [
-  {
-    "type": "get",
-    "url": "/api/index/list",
-    "title": "列表接口",
-    "name": "list",
-    "group": "file",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "pageSize",
-            "description": "<p>页面大小.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "pageNum",
-            "description": "<p>页码.</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "pageSize",
-            "description": "<p>页面大小.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "pageTotal",
-            "description": "<p>总页数.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "pageNum",
-            "description": "<p>页码.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "list",
-            "description": "<p>数据列表.</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "src/api/controller/index.ts",
-    "groupTitle": "file"
-  }
-] });
+define({ "api": [  {    "type": "post",    "url": "/home/type/addType",    "title": "添加数据",    "name": "add",    "group": "Type",    "description": "<p>接口详细描述</p>",    "parameter": {      "fields": {        "Parameter": [          {            "group": "Parameter",            "type": "String",            "optional": false,            "field": "name",            "description": "<p>添加类型名字</p>"          }        ]      }    },    "sampleRequest": [      {        "url": "/home/type/addType"      }    ],    "success": {      "fields": {        "Success 200": [          {            "group": "Success 200",            "type": "Number",            "optional": false,            "field": "id",            "description": "<p>结果码</p>"          },          {            "group": "Success 200",            "type": "String",            "optional": false,            "field": "name",            "description": "<p>消息说明</p>"          }        ]      },      "examples": [        {          "title": "Success-Response:",          "content": "{\n     errno: 0,\n     errmsg: \"\",\n     data: [\n         {\n             name: \"娱乐\",\n             id: 1\n         }\n      ]\n}",          "type": "json"        }      ]    },    "version": "0.0.0",    "filename": "src/home/controller/type.ts",    "groupTitle": "Type"  },  {    "type": "post",    "url": "/home/type/delType",    "title": "数据删除",    "name": "del",    "group": "Type",    "description": "<p>数据删除</p>",    "parameter": {      "fields": {        "Parameter": [          {            "group": "Parameter",            "type": "number",            "optional": false,            "field": "id",            "description": "<p>类型id</p>"          }        ]      }    },    "sampleRequest": [      {        "url": "/home/type/delType"      }    ],    "success": {      "fields": {        "Success 200": [          {            "group": "Success 200",            "type": "Number",            "optional": false,            "field": "id",            "description": "<p>结果码</p>"          },          {            "group": "Success 200",            "type": "String",            "optional": false,            "field": "name",            "description": "<p>消息说明</p>"          }        ]      },      "examples": [        {          "title": "Success-Response:",          "content": "{\n     errno: 0,\n     errmsg: \"\",\n     data: null\n}",          "type": "json"        }      ]    },    "version": "0.0.0",    "filename": "src/home/controller/type.ts",    "groupTitle": "Type"  },  {    "type": "post",    "url": "/home/type/modType",    "title": "修改数据",    "name": "mod",    "group": "Type",    "description": "<p>修改数据</p>",    "parameter": {      "fields": {        "Parameter": [          {            "group": "Parameter",            "type": "String",            "optional": false,            "field": "name",            "description": "<p>类型名字</p>"          },          {            "group": "Parameter",            "type": "number",            "optional": false,            "field": "id",            "description": "<p>类型id</p>"          }        ]      }    },    "sampleRequest": [      {        "url": "/home/type/modType"      }    ],    "success": {      "fields": {        "Success 200": [          {            "group": "Success 200",            "type": "Number",            "optional": false,            "field": "id",            "description": "<p>结果码</p>"          },          {            "group": "Success 200",            "type": "String",            "optional": false,            "field": "name",            "description": "<p>消息说明</p>"          }        ]      },      "examples": [        {          "title": "Success-Response:",          "content": "{\n     errno: 0,\n     errmsg: \"\",\n     data: [\n         {\n             name: \"娱乐\",\n             id: 1\n         }\n      ]\n}",          "type": "json"        }      ]    },    "version": "0.0.0",    "filename": "src/home/controller/type.ts",    "groupTitle": "Type"  },  {    "type": "post",    "url": "/home/type/getType",    "title": "查询数据",    "name": "query",    "group": "Type",    "description": "<p>查询数据</p>",    "sampleRequest": [      {        "url": "/home/type/getType"      }    ],    "success": {      "fields": {        "Success 200": [          {            "group": "Success 200",            "type": "Number",            "optional": false,            "field": "id",            "description": "<p>结果码</p>"          },          {            "group": "Success 200",            "type": "String",            "optional": false,            "field": "name",            "description": "<p>消息说明</p>"          }        ]      },      "examples": [        {          "title": "Success-Response:",          "content": "{\n     errno: 0,\n     errmsg: \"\",\n     data: null\n}",          "type": "json"        }      ]    },    "version": "0.0.0",    "filename": "src/home/controller/type.ts",    "groupTitle": "Type"  }] });
