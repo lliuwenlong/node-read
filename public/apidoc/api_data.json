@@ -1,1 +1,66 @@
-[  {    "type": "GET",    "url": "/api/users/:id",    "title": "获得某个用户",    "description": "<p>根据ID获得某个用户</p>",    "name": "getUser",    "parameter": {      "fields": {        "path参数": [          {            "group": "path参数",            "type": "Number",            "optional": false,            "field": "id",            "description": ""          }        ]      }    },    "sampleRequest": [      {        "url": "/api/users/5a45cefd080d7c39a036ca55"      }    ],    "group": "User",    "version": "1.0.0",    "filename": "src/home/controller/index.ts",    "groupTitle": "User"  }]
+[
+  {
+    "type": "get",
+    "url": "/api/index/list",
+    "title": "列表接口",
+    "name": "list",
+    "group": "file",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>页面大小.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pageNum",
+            "description": "<p>页码.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>页面大小.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "pageTotal",
+            "description": "<p>总页数.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "pageNum",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list",
+            "description": "<p>数据列表.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/api/controller/index.ts",
+    "groupTitle": "file"
+  }
+]
