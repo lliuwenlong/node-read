@@ -22,4 +22,4 @@ export default class extends Base {
         return this.success([1, 2, 3]);
     }
 
-};
+}

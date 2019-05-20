@@ -36,13 +36,13 @@ exports.model = {
   },
   mysql: {
     handle: mysql,
-    database: '',
-    prefix: 'think_',
+    database: 'read',
+    prefix: 'read_',
     encoding: 'utf8',
-    host: '127.0.0.1',
-    port: '',
+    host: '106.12.108.135',
+    port: '3306',
     user: 'root',
-    password: 'root',
+    password: 'root123..',
     dateStrings: true,
     acquireWaitTimeout: isDev ? 3000 : 0
   }
