@@ -22,8 +22,8 @@ module.exports = [
         handle: 'resource',
         enable: isDev,
         options: {
-            root: path.join(thinkjs_1.think.ROOT_PATH, 'www'),
-            publicPath: /^\/(static|favicon\.ico)/
+            root: path.join(thinkjs_1.think.ROOT_PATH, 'public'),
+            publicPath: /^\/(apidoc|favicon\.ico)/
         }
     },
     {

@@ -1,0 +1,13 @@
+{
+    "name": "后台管理",
+    "version": "1.0.0",
+    "description": "樊登读书后台管理项目API文档",
+    "title": "cms-server API",
+    "url" : "",
+    "sampleUrl": "",
+    "forceLanguage":"zh-cn",
+    "template": {
+      "withCompare": true,
+      "withGenerator": true
+    }
+}
