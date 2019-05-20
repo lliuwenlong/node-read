@@ -5,6 +5,7 @@
   "author": "root <18801295284@163.com>",
   "scripts": {
     "start": "node development.js",
+    "doc": "apidoc -i src -o public/apidoc",
     "compile": "npm run lint && tsc",
     "lint": "tslint \"src/**/*.ts\""
   },
