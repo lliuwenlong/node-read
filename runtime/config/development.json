@@ -17,7 +17,7 @@
       "type": "file",
       "file": {
         "timeout": 86400000,
-        "cachePath": "/Users/liuwenlong/Desktop/node-read/node-read/runtime/cache",
+        "cachePath": "E:\\think\\node-read\\runtime\\cache",
         "pathDepth": 1,
         "gcInterval": 86400000
       }
@@ -44,13 +44,13 @@
         "cookie": {
           "name": "thinkjs"
         },
-        "sessionPath": "/Users/liuwenlong/Desktop/node-read/node-read/runtime/session"
+        "sessionPath": "E:\\think\\node-read\\runtime\\session"
       }
     },
     "view": {
       "type": "nunjucks",
       "nunjucks": {
-        "viewPath": "/Users/liuwenlong/Desktop/node-read/node-read/view",
+        "viewPath": "E:\\think\\node-read\\view",
         "sep": "_",
         "extname": ".html"
       }
@@ -74,7 +74,7 @@
       "type": "file",
       "file": {
         "timeout": 86400000,
-        "cachePath": "/Users/liuwenlong/Desktop/node-read/node-read/runtime/cache",
+        "cachePath": "E:\\think\\node-read\\runtime\\cache",
         "pathDepth": 1,
         "gcInterval": 86400000
       }
@@ -101,13 +101,13 @@
         "cookie": {
           "name": "thinkjs"
         },
-        "sessionPath": "/Users/liuwenlong/Desktop/node-read/node-read/runtime/session"
+        "sessionPath": "E:\\think\\node-read\\runtime\\session"
       }
     },
     "view": {
       "type": "nunjucks",
       "nunjucks": {
-        "viewPath": "/Users/liuwenlong/Desktop/node-read/node-read/view",
+        "viewPath": "E:\\think\\node-read\\view",
         "sep": "_",
         "extname": ".html"
       }

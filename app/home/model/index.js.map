@@ -1,9 +1,9 @@
 {
     "version": 3,
-    "file": "../../../src/home/model/index.ts",
+    "file": "..\\..\\..\\src\\home\\model\\index.ts",
     "sourceRoot": "",
     "sources": [
-        "../../../src/home/model/index.ts"
+        "..\\..\\..\\src\\home\\model\\index.ts"
     ],
     "names": [],
     "mappings": ";;AAAA,qCAAgC;AAEhC,eAAqB,SAAQ,eAAK,CAAC,KAAK;CACvC;AADD,4BACC"

@@ -8,6 +8,9 @@ class default_1 extends base_js_1.default {
     indexAction() {
         return this.display();
     }
+    listAction() {
+        return this.success([1, 2, 3]);
+    }
 }
 exports.default = default_1;
 ;
