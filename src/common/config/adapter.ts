@@ -45,6 +45,7 @@ exports.model = {
 		user: 'root',
 		password: 'root123..',
 		dateStrings: true,
+		connectionLimit: 10,
 		acquireWaitTimeout: isDev ? 3000 : 0
 	}
 };
