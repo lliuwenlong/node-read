@@ -2,7 +2,7 @@
  * @file 用户控制器
  */
 
-import Base from './base';
+import {think} from 'thinkjs';
 import nodemailer from 'nodemailer';
 import mailConfig from '../config/mailConfig.js';
 import {mathRand} from '../../common/util/index.js';
@@ -14,9 +14,12 @@ import {
     API_REGISTER_SUCCESS,
     API_REGISTER_ERROR,
     API_REGISTER_USERNAME,
-    API_REGISTER_EMAIL
+    API_REGISTER_EMAIL,
+    API_LOGIN_NO_USERNAME,
+    API_LOGIN_PWD_ERROR,
+    API_LOGIN_SUCCESS
 } from '../../common/codeConfig/code';
-export default class extends Base {
+export default class extends think.Controller {
     private userModel: object;
     constructor(ctx: any) {
         super(ctx);
@@ -63,7 +66,7 @@ export default class extends Base {
      * @apiDescription 注册账号
      * @apiParam {String} email 邮箱
      * @apiParam {String} accountNumber 账号
-     * @apiParam {String} password 账号
+     * @apiParam {String} password 密码
      * @apiParam {number} emailCode 邮箱验证码 账号
      * @apiSampleRequest /api/user/registerUser
      */
@@ -108,5 +111,37 @@ export default class extends Base {
                 errorCode.get(API_REGISTER_ERROR)['code'],
                 errorCode.get(API_REGISTER_ERROR)['message']
             )
+    }
+
+    /**
+     *
+     * @api {post} /api/user/login 登陆
+     * @apiName login
+     * @apiGroup User
+     * @apiDescription 登陆
+     * @apiParam {String} username 账号
+     * @apiParam {String} password 密码
+     * @apiSampleRequest /api/user/login
+     */
+    async loginAction() {
+        const username: string = this.post('username');
+        const password: string = md5(this.post('password'));
+        const userInfo: object = await this.userModel['loginAction'](username);
+        if (!userInfo['username']) {
+            return this.fail(
+                errorCode.get(API_LOGIN_NO_USERNAME)['code'],
+                errorCode.get(API_LOGIN_NO_USERNAME)['message']
+            );
+        };
+        if (userInfo['password'] !== password) {
+            return this.fail(
+                errorCode.get(API_LOGIN_PWD_ERROR)['code'],
+                errorCode.get(API_LOGIN_PWD_ERROR)['message']
+            )
+        }
+        await this.session('userId', 123, {
+            maxAge:  5 * 60 * 60 * 1000,
+        });
+        this.success(null, successCode.get(API_LOGIN_SUCCESS)['message']);
     }
 };

@@ -10,6 +10,10 @@ export const successCode = new Map<number, object>([
     [
         config.API_REGISTER_SUCCESS,
         {code: config.API_REGISTER_SUCCESS, message: '注册成功'}
+    ],
+    [
+        config.API_LOGIN_SUCCESS,
+        {code: config.API_LOGIN_SUCCESS, message: '登陆成功'}
     ]
 ]);
 
@@ -33,5 +37,17 @@ export const errorCode = new Map<number, object>([
     [
         config.API_REGISTER_EMAIL,
         {code: config.API_REGISTER_EMAIL, message: '邮箱已被注册'}
+    ],
+    [
+        config.API_LOGIN_NO_USERNAME,
+        {code: config.API_REGISTER_EMAIL, message: '账号不存在'}
+    ],
+    [
+        config.API_LOGIN_PWD_ERROR,
+        {code: config.API_LOGIN_PWD_ERROR, message: '密码错误'}
+    ],
+    [
+        config.API_ILLEGAL_LOGIN,
+        {code: config.API_ILLEGAL_LOGIN, message: '非法登陆'}
     ]
 ]);

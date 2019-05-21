@@ -84,6 +84,7 @@ exports.view = {
 		handle: nunjucks
 	}
 };
+
 exports.logger = {
 	type: 'dateFile',
 	dateFile: {
@@ -94,5 +95,4 @@ exports.logger = {
 		alwaysIncludePattern: true,
 		filename: path.join(think.ROOT_PATH, 'logs/journal.log')
 	}
-}
-
+};
