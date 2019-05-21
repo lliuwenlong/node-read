@@ -19,6 +19,22 @@ module.exports = [
     }
   },
   {
+    handle: 'resource',
+    enable: isDev,
+    options: {
+      root: path.join(think.ROOT_PATH, 'public'),
+      publicPath: /^\/(html|favicon\.ico)/
+    }
+  },
+  {
+    handle: 'resource',
+    enable: isDev,
+    options: {
+      root: path.join(think.ROOT_PATH, 'public'),
+      publicPath: /^\/(uploadImages|favicon\.ico)/
+    }
+  },
+  {
     handle: 'trace',
     enable: !think.isCli,
     options: {
