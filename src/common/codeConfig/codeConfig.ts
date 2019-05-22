@@ -18,6 +18,10 @@ export const successCode = new Map<number, object>([
     [
         config.API_POSSWORD_SUCCESS,
         {code: config.API_POSSWORD_SUCCESS, message: '密码修改成功'}
+    ],
+    [
+        config.API_UPLOADFILE_SUCCESS,
+        {code: config.API_ILLEGAL_LOGIN, message: '上传成功'}
     ]
 ]);
 
@@ -53,5 +57,9 @@ export const errorCode = new Map<number, object>([
     [
         config.API_ILLEGAL_LOGIN,
         {code: config.API_ILLEGAL_LOGIN, message: '非法登陆'}
-    ]
+    ],
+    [
+        config.API_UPLOADFILE_ERROR,
+        {code: config.API_UPLOADFILE_ERROR, message: '上传失败'}
+    ],
 ]);

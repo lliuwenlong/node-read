@@ -22,3 +22,7 @@ export const API_LOGIN_SUCCESS: number = 207;
 export const API_ILLEGAL_LOGIN: number = 208;
 // 修改密码成功
 export const API_POSSWORD_SUCCESS: number = 209;
+// 上传成功
+export const API_UPLOADFILE_SUCCESS: number = 209;
+// 上传失败
+export const API_UPLOADFILE_ERROR: number = 210;

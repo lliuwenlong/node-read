@@ -1,6 +1,22 @@
 [
   {
     "type": "post",
+    "url": "/api/common/uploadFile",
+    "title": "文件上传",
+    "name": "common",
+    "group": "Common",
+    "description": "<p>上传文件</p>",
+    "sampleRequest": [
+      {
+        "url": "/api/common/uploadFile"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/api/controller/common.ts",
+    "groupTitle": "Common"
+  },
+  {
+    "type": "post",
     "url": "/api/curriculum/addOrUpdate",
     "title": "课程添加修改",
     "name": "addOrUpdate",
@@ -120,6 +136,115 @@
     "version": "0.0.0",
     "filename": "src/api/controller/curriculum.ts",
     "groupTitle": "Curriculum"
+  },
+  {
+    "type": "post",
+    "url": "/api/giftCard/addGiftCard",
+    "title": "添加/修改礼品卡",
+    "name": "addGiftCard",
+    "group": "GiftCard",
+    "description": "<p>添加礼品卡</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>礼品卡名字</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "purchaseInstructions",
+            "description": "<p>购买须知</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "process",
+            "description": "<p>流程</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "coverPhoto",
+            "description": "<p>封面图片</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "isMod",
+            "description": "<p>是否修改</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "/api/giftCard/addGiftCard"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/api/controller/giftCard.ts",
+    "groupTitle": "GiftCard"
+  },
+  {
+    "type": "post",
+    "url": "/api/giftCard/delGiftCard",
+    "title": "删除礼品卡",
+    "name": "delGiftCard",
+    "group": "GiftCard",
+    "description": "<p>删除礼品卡</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "/api/giftCard/delGiftCard"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/api/controller/giftCard.ts",
+    "groupTitle": "GiftCard"
+  },
+  {
+    "type": "post",
+    "url": "/api/giftCard/getGiftCardList",
+    "title": "查看礼品卡列表",
+    "name": "getGiftCardList",
+    "group": "GiftCard",
+    "description": "<p>查看礼品卡列表</p>",
+    "sampleRequest": [
+      {
+        "url": "/api/giftCard/getGiftCardList"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/api/controller/giftCard.ts",
+    "groupTitle": "GiftCard"
   },
   {
     "type": "post",
