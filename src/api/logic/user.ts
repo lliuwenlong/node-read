@@ -1,4 +1,4 @@
-import {think} from 'thinkjs';
+import { think } from 'thinkjs';
 
 export default class extends think.Logic {
     sendMailAction() {
@@ -27,7 +27,7 @@ export default class extends think.Logic {
                 required: true,
                 string: true,
                 trim: true,
-                byteLength: {min: 6, max: 16}
+                byteLength: { min: 6, max: 16 }
             },
             emailCode: {
                 required: true,
@@ -42,6 +42,49 @@ export default class extends think.Logic {
         this.allowMethods = 'post';
         this.rules = {
             username: {
+                required: true,
+                string: true,
+                trim: true
+            },
+            password: {
+                required: true,
+                string: true,
+                trim: true
+            }
+        }
+    }
+
+    getBackAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            email: {
+                required: true,
+                email: true
+            },
+            password: {
+                required: true,
+                string: true,
+                trim: true,
+                byteLength: { min: 6, max: 16 }
+            },
+            emailCode: {
+                required: true,
+                int: true,
+                trim: true,
+                byteLength: 6
+            }
+        }
+    }
+
+    updatePosswordAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            username: {
+                required: true,
+                string: true,
+                trim: true
+            },
+            passwordOld: {
                 required: true,
                 string: true,
                 trim: true

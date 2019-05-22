@@ -1,6 +1,6 @@
-import {think} from 'thinkjs';
-import {errorCode} from '../../common/codeConfig/codeConfig';
-import {API_ILLEGAL_LOGIN} from '../../common/codeConfig/code';
+import { think } from 'thinkjs';
+import { errorCode } from '../../common/codeConfig/codeConfig';
+import { API_ILLEGAL_LOGIN } from '../../common/codeConfig/code';
 
 export default class extends think.Controller {
 	async __before() {

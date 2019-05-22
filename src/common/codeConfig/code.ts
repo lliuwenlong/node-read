@@ -20,3 +20,5 @@ export const API_LOGIN_PWD_ERROR: number = 207;
 export const API_LOGIN_SUCCESS: number = 207;
 // 非法登陆
 export const API_ILLEGAL_LOGIN: number = 208;
+// 修改密码成功
+export const API_POSSWORD_SUCCESS: number = 209;
