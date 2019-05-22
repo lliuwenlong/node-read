@@ -9,3 +9,13 @@ export const mathRand = (): string => {
     }
     return num;
 }
+
+export const filterObject = (param: object): object => {
+    let obj = {...param};
+    for(const key in obj) {
+        if(obj[key] == undefined || obj[key] === '') {	
+            delete obj[key];
+        }
+    };
+    return obj;
+}

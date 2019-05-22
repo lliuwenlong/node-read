@@ -20,3 +20,7 @@ export const API_LOGIN_PWD_ERROR: number = 207;
 export const API_LOGIN_SUCCESS: number = 207;
 // 非法登陆
 export const API_ILLEGAL_LOGIN: number = 208;
+// 上传成功
+export const API_UPLOADFILE_SUCCESS: number = 209;
+// 上传失败
+export const API_UPLOADFILE_ERROR: number = 210;
