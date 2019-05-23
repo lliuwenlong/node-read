@@ -145,16 +145,16 @@ export default class extends think.Controller {
         }
     }
 
-    // /**
-    //  *
-    //  * @api {post} /api/unicorn/setCity 独角兽设置区域
-    //  * @apiName setCity
-    //  * @apiGroup Unicorn
-    //  * @apiDescription 独角兽设置区域
-    //  * @apiParam {number} id 独角兽Id
-    //  * @apiParam {array} city_ids 城市Id
-    //  * @apiSampleRequest /api/unicorn/setCity
-    //  */
+    /**
+     *
+     * @api {post} /api/unicorn/setCity 独角兽设置区域
+     * @apiName setCity
+     * @apiGroup Unicorn
+     * @apiDescription 独角兽设置区域
+     * @apiParam {number} id 独角兽Id
+     * @apiParam {array} city_ids 城市Id
+     * @apiSampleRequest /api/unicorn/setCity
+     */
     // async setCityAction() {
     //     const id:number = this.post('id');
     //     const city_ids:Array<any> = this.post('city_ids');
