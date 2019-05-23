@@ -45,6 +45,7 @@ export default class extends think.Controller {
      * @apiParam {string} about_info 相关资讯
      * @apiParam {string} about_video 相关视频
      * @apiParam {array} unicorn_tags 标签Id
+     * @apiParam {array} unicorn_city 抢占城市Id
      * @apiParam {array} unicorn_info 项目信息
      * @apiParam {array} unicorn_member 成员
      * 
@@ -75,6 +76,7 @@ export default class extends think.Controller {
         const addtime: string = moment().format('YYYY-MM-DD');
 
         const unicorn_tags: Array<object> = this.post('unicorn_tags');
+        const unicorn_city: Array<object> = this.post('unicorn_city');
         const unicorn_info: Array<object> = this.post('unicorn_info');
         const unicorn_member: Array<object> = this.post('unicorn_member');
 
@@ -84,9 +86,11 @@ export default class extends think.Controller {
         if (typeof (state) === "number") {
             try {
                 unicorn_tags.map(v => v['unicorn_id'] = state);
+                unicorn_city.map(v => v['unicorn_id'] = state);
                 unicorn_info.map(v => v['unicorn_id'] = state);
                 unicorn_member.map(v => v['unicorn_id'] = state);
                 await this.model('unicorn_tags_join').addMany(unicorn_tags);
+                await this.model('unicorn_city_join').addMany(unicorn_city);
                 await this.model('unicorn_info').addMany(unicorn_info);
                 await this.model('unicorn_member').addMany(unicorn_member);
                 this.success(`${state}`, successCode.get(1)['message']);
@@ -99,12 +103,15 @@ export default class extends think.Controller {
         else if (state) {
             try {
                 unicorn_tags.map(v => v['unicorn_id'] = id);
+                unicorn_city.map(v => v['unicorn_id'] = id);
                 unicorn_info.map(v => v['unicorn_id'] = id);
                 unicorn_member.map(v => v['unicorn_id'] = id);
                 await this.model('unicorn_tags_join').where({ unicorn_id: id }).delete();
+                await this.model('unicorn_city_join').where({ unicorn_id: id }).delete();
                 await this.model('unicorn_info').where({ unicorn_id: id }).delete();
                 await this.model('unicorn_member').where({ unicorn_id: id }).delete();
                 await this.model('unicorn_tags_join').addMany(unicorn_tags);
+                await this.model('unicorn_city_join').addMany(unicorn_city);
                 await this.model('unicorn_info').addMany(unicorn_info);
                 await this.model('unicorn_member').addMany(unicorn_member);
                 this.success(successCode.get(2)['code'], successCode.get(2)['message']);
@@ -137,4 +144,27 @@ export default class extends think.Controller {
             return this.fail(errorCode.get(3)['code'], errorCode.get(3)['message']);
         }
     }
+
+    // /**
+    //  *
+    //  * @api {post} /api/unicorn/setCity 独角兽设置区域
+    //  * @apiName setCity
+    //  * @apiGroup Unicorn
+    //  * @apiDescription 独角兽设置区域
+    //  * @apiParam {number} id 独角兽Id
+    //  * @apiParam {array} city_ids 城市Id
+    //  * @apiSampleRequest /api/unicorn/setCity
+    //  */
+    // async setCityAction() {
+    //     const id:number = this.post('id');
+    //     const city_ids:Array<any> = this.post('city_ids');
+    //     // await this.unicornModel['setCity'](id,city_ids);
+    //     // return this.success()
+    //     // const id: number = this.post('id');
+    //     if (await this.unicornModel['setCity'](id,city_ids))
+    //         return this.success(successCode.get(1)['code'], successCode.get(1)['message']);
+    //     else {
+    //         return this.fail(errorCode.get(1)['code'], errorCode.get(1)['message']);
+    //     }
+    // }
 }

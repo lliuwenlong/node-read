@@ -13,7 +13,12 @@ export default class extends think.Model {
                 type: think.Model.MANY_TO_MANY,
                 rModel: 'unicorn_tags_join',
                 rfKey: 'tags_id'
-              }
+            },
+            city: {
+                type: think.Model.MANY_TO_MANY,
+                rModel: 'unicorn_city_join',
+                rfKey: 'city_id'
+            }
         };
     }
 
@@ -49,4 +54,14 @@ export default class extends think.Model {
             return false
         }
     }
+
+    // async setCity(id: number,ids: Array<any>): Promise<boolean> {
+    //     try {
+    //         ids.map(v=>v['unicorn_id']=id);
+    //         return !!(await this.model('city').addMany(ids)).length;
+    //     } catch (e) {
+    //         think.logger.error(e);
+    //         return false
+    //     }
+    // }
 }

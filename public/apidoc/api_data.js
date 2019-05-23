@@ -5,7 +5,103 @@ define({ "api": [
     "title": "文件上传",
     "name": "common",
     "group": "Common",
-    "description": "<p>上传文件</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "file",
+            "optional": false,
+            "field": "file",
+            "description": "<p>文件</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "/api/common/uploadFile"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/api/controller/common.ts",
+    "groupTitle": "Common"
+  },
+  {
+    "type": "post",
+    "url": "/api/common/uploadFile",
+    "title": "文件分片上传",
+    "name": "common",
+    "group": "Common",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "file",
+            "optional": false,
+            "field": "file",
+            "description": "<p>文件</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "index",
+            "description": "<p>分片编号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "hash",
+            "description": "<p>分片唯一名字</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "/api/common/uploadFile"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/api/controller/common.ts",
+    "groupTitle": "Common"
+  },
+  {
+    "type": "post",
+    "url": "/api/common/uploadFile",
+    "title": "文件分片合并",
+    "name": "common",
+    "group": "Common",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "total",
+            "description": "<p>分片数量</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "name",
+            "description": "<p>文件名字</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "hash",
+            "description": "<p>分片唯一名字</p>"
+          }
+        ]
+      }
+    },
     "sampleRequest": [
       {
         "url": "/api/common/uploadFile"
@@ -777,6 +873,42 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "/api/unicorn/getList"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/api/controller/unicorn.ts",
+    "groupTitle": "Unicorn"
+  },
+  {
+    "type": "post",
+    "url": "/api/unicorn/setCity",
+    "title": "独角兽设置区域",
+    "name": "setCity",
+    "group": "Unicorn",
+    "description": "<p>独角兽设置区域</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>独角兽Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "array",
+            "optional": false,
+            "field": "city_ids",
+            "description": "<p>城市Id</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "/api/unicorn/setCity"
       }
     ],
     "version": "0.0.0",
