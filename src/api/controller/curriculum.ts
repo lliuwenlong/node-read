@@ -2,8 +2,8 @@
  * @file 课程
  */
 
-import { think } from 'thinkjs';
-import { errorCode, successCode } from '../../common/codeConfig/codeConfig';
+import {think} from 'thinkjs';
+import {errorCode, successCode} from '../../common/codeConfig/codeConfig';
 import moment from 'moment'
 export default class extends think.Controller {
     private curriculumModel: object;

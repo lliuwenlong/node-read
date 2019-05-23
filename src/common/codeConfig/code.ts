@@ -28,3 +28,7 @@ export const API_UPLOADFILE_SUCCESS: number = 209;
 export const API_UPLOADFILE_ERROR: number = 210;
 // 上传失败
 export const API_UPLOADFILE_FILE_NUMBER: number = 211;
+// 上传失败
+export const API_SEND_MESSAGE_SUCCESS: number = 212;
+// 上传失败
+export const API_SEND_MESSAGE_ERROR: number = 213;

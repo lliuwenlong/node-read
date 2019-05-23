@@ -22,6 +22,10 @@ export const successCode = new Map<number, object>([
     [
         config.API_UPLOADFILE_SUCCESS,
         {code: config.API_ILLEGAL_LOGIN, message: '上传成功'}
+    ],
+    [
+        config.API_SEND_MESSAGE_SUCCESS,
+        {code: config.API_SEND_MESSAGE_SUCCESS, message: '消息推送成功'}
     ]
 ]);
 
@@ -65,5 +69,9 @@ export const errorCode = new Map<number, object>([
     [
         config.API_UPLOADFILE_FILE_NUMBER,
         {code: config.API_UPLOADFILE_FILE_NUMBER, message: '切片文件数量不符合'}
+    ],
+    [
+        config.API_SEND_MESSAGE_ERROR,
+        {code: config.API_SEND_MESSAGE_ERROR, message: '消息推送失败'}
     ]
 ]);
