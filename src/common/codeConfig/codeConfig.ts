@@ -62,4 +62,8 @@ export const errorCode = new Map<number, object>([
         config.API_UPLOADFILE_ERROR,
         {code: config.API_UPLOADFILE_ERROR, message: '上传失败'}
     ],
+    [
+        config.API_UPLOADFILE_FILE_NUMBER,
+        {code: config.API_UPLOADFILE_FILE_NUMBER, message: '切片文件数量不符合'}
+    ]
 ]);

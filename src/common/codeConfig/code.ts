@@ -26,3 +26,5 @@ export const API_POSSWORD_SUCCESS: number = 209;
 export const API_UPLOADFILE_SUCCESS: number = 209;
 // 上传失败
 export const API_UPLOADFILE_ERROR: number = 210;
+// 上传失败
+export const API_UPLOADFILE_FILE_NUMBER: number = 211;

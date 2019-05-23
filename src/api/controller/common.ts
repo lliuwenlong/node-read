@@ -4,7 +4,8 @@ import fs from 'fs';
 import {successCode, errorCode} from '../../common/codeConfig/codeConfig';
 import {
     API_UPLOADFILE_SUCCESS,
-    API_UPLOADFILE_ERROR
+    API_UPLOADFILE_ERROR,
+    API_UPLOADFILE_FILE_NUMBER
 } from '../../common/codeConfig/code';
 export default class extends think.Controller {
     private chunkBasePath: string = path.join(think.ROOT_PATH, 'public/~uploads');
@@ -14,7 +15,7 @@ export default class extends think.Controller {
      * @api {post} /api/common/uploadFile 文件上传
      * @apiName common
      * @apiGroup Common
-     * @apiDescription 上传文件
+     * @apiParam {file} file 文件
      * @apiSampleRequest /api/common/uploadFile
      */
     uploadFileAction() {
@@ -36,6 +37,16 @@ export default class extends think.Controller {
 
     }
 
+    /**
+     *
+     * @api {post} /api/common/uploadFile 文件分片上传
+     * @apiName common
+     * @apiGroup Common
+     * @apiParam {file} file 文件
+     * @apiParam {int} index 分片编号
+     * @apiParam {string} hash 分片唯一名字
+     * @apiSampleRequest /api/common/uploadFile
+     */
     chunkFileAction() {
         const file = this.file('file');
         const index: number = this.post('index');
@@ -54,6 +65,16 @@ export default class extends think.Controller {
         }
     }
 
+    /**
+     *
+     * @api {post} /api/common/uploadFile 文件分片合并
+     * @apiName common
+     * @apiGroup Common
+     * @apiParam {int} total 分片数量
+     * @apiParam {int} name 文件名字
+     * @apiParam {string} hash 分片唯一名字
+     * @apiSampleRequest /api/common/uploadFile
+     */
     mergeChunkFileAction() {
         const total = this.post('total');
         const hash: string = this.post('hash');
@@ -65,14 +86,30 @@ export default class extends think.Controller {
         if (!think.isDirectory(`${this.vdeioBasePath}/${fileName}`)) {
             fs.writeFileSync(`${this.vdeioBasePath}/${fileName}`, '');
         }
-        const chunks = fs.readdirSync(this.chunkBasePath + '/' + hash);
-        if (chunks.length !== total || chunks.length === 0) {
+        try {
+            const chunks = fs.readdirSync(this.chunkBasePath + '/' + hash);
+            if (chunks.length !== total || chunks.length === 0) {
+                return this.fail(
+                    API_UPLOADFILE_FILE_NUMBER,
+                    errorCode.get(API_UPLOADFILE_FILE_NUMBER)['message']
+                );
+            }
+            for (let i = 0; i < chunks.length; i++) {
+                fs.appendFileSync(`${this.vdeioBasePath}/${fileName}`,
+                fs.readFileSync(`${this.chunkBasePath}/${hash}/${hash}-${i}`));
+                fs.unlinkSync(`${this.chunkBasePath}/${hash}/${hash}-${i}`);
+            }
+            fs.rmdirSync(this.chunkBasePath + '/' + hash);
+            return this.success(
+                `${this.vdeioBasePath}/${fileName}`,
+                successCode.get(API_UPLOADFILE_SUCCESS)['message']
+            );
+        } catch (e) {
+            return this.fail(
+                API_UPLOADFILE_ERROR,
+                errorCode.get(API_UPLOADFILE_ERROR)['message']
+            );
         }
-        for (let i = 0; i < chunks.length; i++) {
-            fs.appendFileSync(`${this.vdeioBasePath}/${fileName}`,
-            fs.readFileSync(`${this.chunkBasePath}/${hash}/${hash}-${i}`));
-            fs.unlinkSync(`${this.chunkBasePath}/${hash}/${hash}-${i}`);
-        }
-        fs.rmdirSync(this.chunkBasePath + '/' + hash);
+        
     }
 };
