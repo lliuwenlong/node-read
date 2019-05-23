@@ -10,6 +10,7 @@ import {
 export default class extends think.Controller {
     private chunkBasePath: string = path.join(think.ROOT_PATH, 'public/~uploads');
     private vdeioBasePath: string = path.join(think.ROOT_PATH, 'public/uploadVdeio');
+
     /**
      *
      * @api {post} /api/common/uploadFile 文件上传
@@ -39,13 +40,13 @@ export default class extends think.Controller {
 
     /**
      *
-     * @api {post} /api/common/uploadFile 文件分片上传
-     * @apiName common
+     * @api {post} /api/common/chunkFile 文件分片上传
+     * @apiName chunkFile
      * @apiGroup Common
      * @apiParam {file} file 文件
      * @apiParam {int} index 分片编号
      * @apiParam {string} hash 分片唯一名字
-     * @apiSampleRequest /api/common/uploadFile
+     * @apiSampleRequest /api/common/chunkFile
      */
     chunkFileAction() {
         const file = this.file('file');
@@ -67,13 +68,13 @@ export default class extends think.Controller {
 
     /**
      *
-     * @api {post} /api/common/uploadFile 文件分片合并
-     * @apiName common
+     * @api {post} /api/common/mergeChunkFile 文件分片合并
+     * @apiName mergeChunk
      * @apiGroup Common
      * @apiParam {int} total 分片数量
      * @apiParam {int} name 文件名字
      * @apiParam {string} hash 分片唯一名字
-     * @apiSampleRequest /api/common/uploadFile
+     * @apiSampleRequest /api/common/mergeChunkFile
      */
     mergeChunkFileAction() {
         const total = this.post('total');
