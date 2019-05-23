@@ -141,7 +141,7 @@ export default class extends think.Controller {
                 errorCode.get(API_LOGIN_PWD_ERROR)['message']
             )
         }
-        await this.session('userId', 123, {
+        await this.session('userId', userInfo['id'], {
             maxAge: 5 * 60 * 60 * 1000,
         });
         this.success(null, successCode.get(API_LOGIN_SUCCESS)['message']);

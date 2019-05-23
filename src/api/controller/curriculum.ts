@@ -5,7 +5,8 @@
 import {think} from 'thinkjs';
 import {errorCode, successCode} from '../../common/codeConfig/codeConfig';
 import moment from 'moment'
-export default class extends think.Controller {
+import Base from './base.js';
+export default class extends Base {
     private curriculumModel: object;
     constructor(ctx: any) {
         super(ctx);

@@ -4,7 +4,8 @@
 
 import { think } from 'thinkjs';
 import { errorCode, successCode } from '../../common/codeConfig/codeConfig';
-export default class extends think.Controller {
+import Base from './base.js';
+export default class extends Base {
     private curriculumTypeModel: object;
     constructor(ctx: any) {
         super(ctx);

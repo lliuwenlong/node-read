@@ -55,13 +55,23 @@ export default class extends think.Model {
         }
     }
 
-    // async setCity(id: number,ids: Array<any>): Promise<boolean> {
-    //     try {
-    //         ids.map(v=>v['unicorn_id']=id);
-    //         return !!(await this.model('city').addMany(ids)).length;
-    //     } catch (e) {
-    //         think.logger.error(e);
-    //         return false
-    //     }
-    // }
+    async grab(del:object,addData: object): Promise<boolean> {
+        try {
+            await this.model('unicorn_city_user_join').where(del).delete();
+            return !!await this.model('unicorn_city_user_join').add(addData);
+        } catch (e) {
+            think.logger.error(e);
+            return false
+        }
+    }
+
+    async getGrab(where: object): Promise<any> {
+        try {
+            const data: Array<object> = await this.query('select city_ids,unicorn_id, (select GROUP_CONCAT("", cityname ,"") from `read_city` WHERE FIND_IN_SET(id, city_ids))  as city, (select GROUP_CONCAT("", type ,"") from `read_city` WHERE FIND_IN_SET(id, city_ids))  as cityType from `read_unicorn_city_user_join` where unicorn_id = 2;');
+            return data;
+        } catch (e) {
+            think.logger.error(e);
+            return false
+        }
+    }
 }

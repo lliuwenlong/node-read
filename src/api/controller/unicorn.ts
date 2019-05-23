@@ -1,11 +1,12 @@
 /**
  * @file 独角兽
  */
-
 import { think } from 'thinkjs';
 import { errorCode, successCode } from '../../common/codeConfig/codeConfig';
+import { filterObject } from '../../common/util/index'
 import moment from 'moment'
-export default class extends think.Controller {
+import Base from './base.js';
+export default class extends Base {
     private unicornModel: object;
     constructor(ctx: any) {
         super(ctx);
@@ -147,24 +148,46 @@ export default class extends think.Controller {
 
     /**
      *
-     * @api {post} /api/unicorn/setCity 独角兽设置区域
-     * @apiName setCity
+     * @api {post} /api/unicorn/grab 独角兽抢占
+     * @apiName grab
      * @apiGroup Unicorn
-     * @apiDescription 独角兽设置区域
-     * @apiParam {number} id 独角兽Id
-     * @apiParam {array} city_ids 城市Id
-     * @apiSampleRequest /api/unicorn/setCity
+     * @apiDescription 独角兽抢占
+     * @apiParam {number} id Id
+     * @apiParam {array} cityIds 城市Id
+     * @apiSampleRequest /api/unicorn/grab
      */
-    // async setCityAction() {
-    //     const id:number = this.post('id');
-    //     const city_ids:Array<any> = this.post('city_ids');
-    //     // await this.unicornModel['setCity'](id,city_ids);
-    //     // return this.success()
-    //     // const id: number = this.post('id');
-    //     if (await this.unicornModel['setCity'](id,city_ids))
-    //         return this.success(successCode.get(1)['code'], successCode.get(1)['message']);
-    //     else {
-    //         return this.fail(errorCode.get(1)['code'], errorCode.get(1)['message']);
-    //     }
-    // }
+    async grabAction() {
+        const unicorn_id: string = this.post('id');
+        const user_id: string = await this.session('userId');
+        const cityIds: Array<number> = this.post('cityIds');
+        if (await this.unicornModel['grab']({ unicorn_id, user_id }, {
+            unicorn_id, user_id, city_ids: cityIds.join(',')
+        })) {
+            return this.success(successCode.get(1)['code'], successCode.get(1)['message']);
+        } else {
+            return this.fail(errorCode.get(1)['code'], errorCode.get(1)['message']);
+        }
+        
+    }
+    /**
+     *
+     * @api {post} /api/unicorn/getGrab 独角兽已抢占
+     * @apiName getGrab
+     * @apiGroup Unicorn
+     * @apiDescription 独角兽已抢占（默认查询所有用户已抢占项目）
+     * @apiParam {number} userId 用户Id（查询该用户已抢占项目）
+     * @apiParam {number} unicornId 独角兽Id（查询该项目已抢占用户）
+     * @apiSampleRequest /api/unicorn/getGrab
+     */
+    async getGrabAction() {
+        const user_id: string = this.post('userId');
+        const unicorn_id: string = this.post('unicornId');
+        const data:any =await this.unicornModel['getGrab'](filterObject({ user_id,unicorn_id }));
+        if (data) {
+            return this.success(data, successCode.get(4)['message']);
+        } else {
+            return this.fail(errorCode.get(4)['code'], errorCode.get(4)['message']);
+        }
+        
+    }
 }

@@ -5,7 +5,7 @@ export default class extends think.Logic {
         this.allowMethods = 'post';
         this.rules = {
             type_id: {
-                string: true,
+                int: true,
                 trim: true
             },
         }
@@ -14,12 +14,12 @@ export default class extends think.Logic {
         this.allowMethods = 'post';
         this.rules = {
             id: {
-                number: true,
+                int: true,
                 trim: true
             },
             type_id: {
                 required: true,
-                string: true,
+                int: true,
                 trim: true
             },
             title: {
@@ -64,6 +64,11 @@ export default class extends think.Logic {
                 array: true,
                 trim: true
             },
+            unicorn_city: {
+                required: true,
+                array: true,
+                trim: true
+            },
             unicorn_info: {
                 required: true,
                 array: true,
@@ -81,7 +86,35 @@ export default class extends think.Logic {
         this.rules = {
             id: {
                 required: true,
-                number: true,
+                int: true,
+                trim: true
+            },
+        }
+    }
+    grabAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            id: {
+                required: true,
+                int: true,
+                trim: true
+            },
+            cityIds: {
+                required: true,
+                array: true,
+                trim: true
+            },
+        }
+    }
+    getGrabAction(){
+        this.allowMethods = 'post';
+        this.rules = {
+            userId: {
+                int: true,
+                trim: true
+            },
+            unicornId: {
+                int: true,
                 trim: true
             },
         }

@@ -7,7 +7,8 @@ import {
     API_UPLOADFILE_ERROR,
     API_UPLOADFILE_FILE_NUMBER
 } from '../../common/codeConfig/code';
-export default class extends think.Controller {
+import Base from './base.js';
+export default class extends Base {
     private chunkBasePath: string = path.join(think.ROOT_PATH, 'public/~uploads');
     private vdeioBasePath: string = path.join(think.ROOT_PATH, 'public/uploadVdeio');
 
@@ -112,5 +113,25 @@ export default class extends think.Controller {
             );
         }
         
+    }
+
+    
+    /**
+     *
+     * @api {post} /api/common/getCity 省市县获取
+     * @apiName getCity
+     * @apiGroup Common
+     * @apiParam {int} pid 父级id（默认1为省）
+     * @apiSampleRequest /api/common/getCity
+     */
+    async getCityAction() {
+        try {
+            const pid = this.post('pid')?this.post('pid'):1;
+            const data = await this.model('city').where({ pid }).select();
+            return this.success(data,successCode.get(4)['message'])
+        } catch (error) {
+            think.logger.error(error);
+            return this.fail(errorCode.get(4)['code'],errorCode.get(4)['message']);
+        }
     }
 };
