@@ -130,7 +130,6 @@ export default class extends Base {
             const data = await this.model('city').where({ pid }).select();
             return this.success(data,successCode.get(4)['message'])
         } catch (error) {
-            think.logger.error(error);
             return this.fail(errorCode.get(4)['code'],errorCode.get(4)['message']);
         }
     }

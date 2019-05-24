@@ -235,4 +235,52 @@ export default class extends think.Controller {
             )
         }
     }
+
+    /**
+     *
+     * @api {post} /api/user/addUserGuide 添加或修改用户指南
+     * @apiName addUserGuide
+     * @apiParam {String} title 标题
+     * @apiParam {String} text 内容
+     * @apiParam {boolean} mod 是否修改 true 是
+     * @apiParam {int} id 数据id
+     * @apiGroup User
+     * @apiSampleRequest /api/user/addUserGuide
+     */
+    async addUserGuideAction () {
+        const title: String = this.post('title');
+        const text: String = this.post('text');
+        const id: number = this.post('id');
+        const mod: boolean = this.post('mod');
+        if (!mod) {
+            const success: boolean = await this.userModel['addUserGuide']({
+                title,
+                text
+            });
+            return success
+                ? this.success(null, successCode.get(1)['message'])
+                : this.fail(errorCode.get(-1)['code'], successCode.get(-1)['message']);
+        } else {
+            const success: boolean = await this.userModel['updateUserGuide'](filterObject({
+                title,
+                text
+            }), id);
+            return success
+                ? this.success(null, successCode.get(2)['message'])
+                : this.fail(errorCode.get(-2)['code'], successCode.get(-2)['message']);
+        }
+    }
+
+    /**
+     *
+     * @api {post} /api/user/getUserGuide 获取用户指南
+     * @apiName getUserGuide
+     * @apiGroup User
+     * @apiSampleRequest /api/user/getUserGuide
+     */
+
+    async getUserGuideAction() {
+        const list: object[] = await this.userModel['getUserGuide']();
+        return this.success(list, successCode.get(4)['message'])
+    }
 };
