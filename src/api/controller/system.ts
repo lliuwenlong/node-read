@@ -70,4 +70,24 @@ export default class extends Base {
             return this.fail(errorCode.get(3)['code'], errorCode.get(3)['message']);
         }
     }
+
+    /**
+     *
+     * @api {post} /api/system/setBasic 基础设置
+     * @apiName setBasic
+     * @apiGroup System
+     * @apiDescription 基础设置
+     * @apiParam {number} status 1:联系客服电话，2:banner管理，3:用户指南，4:关于我们，5:签到规则设置
+     * @apiParam {string} text 内容
+     * @apiSampleRequest /api/system/setBasic
+     */
+    async setBasicAction() {
+        const status: number = this.post('status');
+        const text: string = this.post('text');
+        if (await this.model('basic_set').where({status}).update({text})){
+            return this.success(successCode.get(2)['code'], successCode.get(2)['message']);
+        } else {
+            return this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
+        }
+    }
 }
