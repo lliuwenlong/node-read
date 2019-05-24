@@ -41,4 +41,9 @@ export default class extends think.Model {
         }).find();
         return userInfo;
     }
+
+    async getUserList(where: object) {
+        const userList: object[] = await this.field('id, username, addTime, vip').where(where).select();
+        return userList;
+    }
 };
