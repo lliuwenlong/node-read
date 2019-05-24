@@ -47,4 +47,14 @@ export default class extends think.Logic {
             }
         }
     }
+
+    delCurriculumListAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            id: {
+                int: true,
+                required: true
+            }
+        }
+    }
 }
