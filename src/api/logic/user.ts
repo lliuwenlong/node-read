@@ -96,4 +96,13 @@ export default class extends think.Logic {
             }
         }
     }
+
+    getUserListAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            vipStatus: {
+                int: true,
+            }
+        }
+    }
 }

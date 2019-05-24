@@ -7,6 +7,7 @@ import nodemailer from 'nodemailer';
 import mailConfig from '../config/mailConfig.js';
 import { mathRand } from '../../common/util/index.js';
 import { errorCode, successCode } from '../../common/codeConfig/codeConfig';
+import {filterObject} from '../../common/util/index';
 import md5 from 'js-md5';
 import moment from 'moment';
 import {
@@ -210,6 +211,28 @@ export default class extends think.Controller {
             return this.success(successCode.get(2)['code'], successCode.get(2)['message'])
         } else {
             return this.fail(errorCode.get(2)['code'], errorCode.get(2)['message'])
+        }
+    }
+
+    /**
+     *
+     * @api {post} /api/user/getUserList 获取用户列表
+     * @apiName getUserList
+     * @apiParam {int} vipStatus 0不是vip 1是vip
+     * @apiGroup User
+     * @apiSampleRequest /api/user/getUserList
+     */
+    
+    async getUserListAction() {
+        const vipStatus: number = this.post('vipStatus');
+        try {
+            const list: object[] = await this.userModel['getUserList'](filterObject({vip: vipStatus}));
+            return this.success(list, successCode.get(4)['message'])
+        } catch (e) {
+            return this.fail(
+                errorCode.get(-4)['code'],
+                errorCode.get(-4)['message']
+            )
         }
     }
 };
