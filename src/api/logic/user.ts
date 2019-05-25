@@ -105,4 +105,22 @@ export default class extends think.Logic {
             }
         }
     }
+
+    addUserGuideAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            mod: {
+                boolean: true,
+            },
+            title: {
+                string: true
+            },
+            text: {
+                string: true
+            },
+            id: {
+                int: true
+            }
+        }
+    }
 }

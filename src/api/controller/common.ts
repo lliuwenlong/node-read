@@ -1,6 +1,7 @@
 import {think} from 'thinkjs';
 import path from 'path';
 import fs from 'fs';
+import {filterObject} from '../../common/util/index';
 import {successCode, errorCode} from '../../common/codeConfig/codeConfig';
 import {
     API_UPLOADFILE_SUCCESS,
@@ -8,9 +9,18 @@ import {
     API_UPLOADFILE_FILE_NUMBER
 } from '../../common/codeConfig/code';
 import Base from './base.js';
+
+interface AddCurriculumListParam {
+    readonly title: string;
+    readonly type: number;
+    readonly audio: string;
+    readonly video: string;
+}
+
 export default class extends Base {
     private chunkBasePath: string = path.join(think.ROOT_PATH, 'public/~uploads');
     private vdeioBasePath: string = path.join(think.ROOT_PATH, 'public/uploadVdeio');
+    private curriculumListModel: object = this.model('curriculumList');
 
     /**
      *
@@ -115,7 +125,6 @@ export default class extends Base {
         
     }
 
-    
     /**
      *
      * @api {post} /api/common/getCity 省市县获取
@@ -130,8 +139,69 @@ export default class extends Base {
             const data = await this.model('city').where({ pid }).select();
             return this.success(data,successCode.get(4)['message'])
         } catch (error) {
-            think.logger.error(error);
             return this.fail(errorCode.get(4)['code'],errorCode.get(4)['message']);
         }
+    }
+
+    /**
+     *
+     * @param {String} title
+     * @param {String} video
+     * @param {String} audio
+     * @param {int} type
+     */
+    async addCurriculumListAction(content: AddCurriculumListParam[]) {
+        return this.curriculumListModel['addCurriculumList'](content);
+    }
+
+    /**
+     *
+     * @api {post} /api/common/delCurriculumList 删除课时
+     * @apiName delCurriculumList
+     * @apiGroup Common
+     * @apiParam {int} id
+     * @apiSampleRequest /api/common/delCurriculumList
+     */
+    async delCurriculumListAction() {
+        const id: number = this.post('id');
+        const success = this.curriculumListModel['delCurriculumList'](id);
+        return success
+            ? this.success(null, successCode.get(3)['message'])
+            : this.fail(errorCode.get(-3)['code'], errorCode.get(-3)['message']);
+
+    }
+
+    /**
+     *
+     * @api {post} /api/common/updateCurriculumList 修改课时
+     * @apiName updateCurriculumList
+     * @apiGroup Common
+     * @apiParam {int} id
+     * @apiSampleRequest /api/common/updateCurriculumList
+     */
+    async updateCurriculumListAction() {
+        const content: object[] = this.post('content').map((item: object) => filterObject(item));
+        const success = this.curriculumListModel['updateCurriculumList'](content);
+        return success
+            ? this.success(null, successCode.get(2)['message'])
+            : this.fail(errorCode.get(-2)['code'], errorCode.get(-2)['message']);
+
+    }
+
+    /**
+     *
+     * @api {post} /api/common/getCurriculumList 查询课时
+     * @apiName getCurriculumList
+     * @apiGroup Common
+     * @apiParam {int} id
+     * @apiSampleRequest /api/common/getCurriculumList
+     */
+    async getCurriculumListAction() {
+        const id: number = this.post('id');
+        const list: object[] = await this.curriculumListModel['getCurriculumList'](id);
+        return list
+            ? this.success(list, successCode.get(4)['message'])
+            : this.fail(errorCode.get(4)['code'], errorCode.get(4)['message']);
+
     }
 };

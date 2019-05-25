@@ -22,11 +22,13 @@ export default class extends Base {
      * @apiSampleRequest /api/webSocket/sendMessage
      */
     sendMessageAction() {
-        const message: string = this.wsData;
+        const message: string = this.wsData.message;
+        const label: string = this.wsData.label;
         const date: string = moment().format('YYYY-MM-DD hh:mm:ss');
         try {
             const success = this.messageModel['addMessage']({
                 message,
+                label,
                 date
             });
             if (success) {

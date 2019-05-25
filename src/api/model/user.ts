@@ -42,8 +42,30 @@ export default class extends think.Model {
         return userInfo;
     }
 
-    async getUserList(where: object) {
+    async getUserList(where: object): Promise<object[]> {
         const userList: object[] = await this.field('id, username, addTime, vip').where(where).select();
         return userList;
+    }
+
+    async addUserGuide(content: object): Promise<boolean> {
+        try {
+            const succee: number = +await this.model('user_guide').add(content);
+            return !!succee;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    async updateUserGuide(content: object, id: number): Promise<boolean> {
+        try {
+            const succee: number = await this.model('user_guide').where({id}).update(content);
+            return !!succee;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    async getUserGuide(): Promise<object[]> {
+        return await this.model('user_guide').select();
     }
 };
