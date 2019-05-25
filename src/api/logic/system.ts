@@ -5,7 +5,7 @@ export default class extends think.Logic {
         this.allowMethods = 'post';
         this.rules = {
             id: {
-                number: true,
+                int: true,
                 trim: true
             },
             name: {
@@ -13,7 +13,7 @@ export default class extends think.Logic {
                 trim: true
             },
             sort: {
-                number: true,
+                int: true,
                 trim: true
             },
         }
@@ -23,7 +23,7 @@ export default class extends think.Logic {
         this.rules = {
             id: {
                 required: true,
-                number: true,
+                int: true,
                 trim: true
             },
         }
