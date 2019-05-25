@@ -1,15 +1,14 @@
 /**
  * @file 系统
  */
-
-import { think } from 'thinkjs';
+import { filterObject } from '../../common/util/index'
 import { errorCode, successCode } from '../../common/codeConfig/codeConfig';
 import Base from './base.js';
 export default class extends Base {
     private curriculumTypeModel: object;
     constructor(ctx: any) {
         super(ctx);
-        this.curriculumTypeModel = this.model('curriculum_type');
+        this.curriculumTypeModel = this.model('type');
     }
 
     /**
@@ -88,6 +87,25 @@ export default class extends Base {
             return this.success(successCode.get(2)['code'], successCode.get(2)['message']);
         } else {
             return this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
+        }
+    }
+
+    /**
+     *
+     * @api {post} /api/system/Basic 基础查询
+     * @apiName Basic
+     * @apiGroup System
+     * @apiDescription 基础查询
+     * @apiParam {number} status 1:联系客服电话，2:banner管理，3:用户指南，4:关于我们，5:签到规则设置
+     * @apiSampleRequest /api/system/Basic
+     */
+    async BasicAction() {
+        const status: number = this.post('status');
+        const data:Array<object> = await this.model('basic_set').where(filterObject({status})).select()
+        if (data){
+            return this.success(data, successCode.get(4)['message']);
+        } else {
+            return this.fail(errorCode.get(4)['code'], errorCode.get(4)['message']);
         }
     }
 }
