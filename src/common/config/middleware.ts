@@ -6,13 +6,13 @@ module.exports = [
 	{
 		handle: 'meta',
 		options: {
-			logRequest: isDev,
-			sendResponseTime: isDev
+			logRequest: true,
+			sendResponseTime: true
 		}
 	},
 	{
 		handle: 'resource',
-		enable: isDev,
+		enable: true,
 		options: {
 			root: path.join(think.ROOT_PATH, 'public'),
 			publicPath: /^\/(apidoc|favicon\.ico)/
@@ -20,7 +20,7 @@ module.exports = [
 	},
 	{
 		handle: 'resource',
-		enable: isDev,
+		enable: true,
 		options: {
 			root: path.join(think.ROOT_PATH, 'public'),
 			publicPath: /^\/(html|favicon\.ico)/
@@ -28,7 +28,7 @@ module.exports = [
 	},
 	{
 		handle: 'resource',
-		enable: isDev,
+		enable: true,
 		options: {
 			root: path.join(think.ROOT_PATH, 'public'),
 			publicPath: /^\/(uploadImages|favicon\.ico)/
@@ -38,7 +38,7 @@ module.exports = [
 		handle: 'trace',
 		enable: !think.isCli,
 		options: {
-			debug: isDev,
+			enable: true,
 			sourceMap: false,
 			error(err: any) {
 				think.logger.error(err);
