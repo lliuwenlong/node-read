@@ -4,7 +4,7 @@ export default class extends think.Logic {
     uploadFileAction() {
         this.allowMethods = 'post';
         this.rules = {
-            fileUpload: {
+            file: {
                 method: 'file',
                 required: true,
                 image: true
