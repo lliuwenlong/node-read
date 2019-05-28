@@ -22,7 +22,10 @@ export default class extends Base {
      */
     async getListAction() {
         const data: Array<object> = await this.underLineModel['getList']();
-        return this.success(data, successCode.get(4)['message']);
+        const arr: object[] = data.map(item => {
+            return {...item, timeSlot: [item['startTime'], item['endTime']]};
+        });
+        return this.success(arr, successCode.get(4)['message']);
     }
 
     /**			
@@ -47,20 +50,20 @@ export default class extends Base {
      */
 
     async addOrUpdateAction() {
-        const id: number = this.post('id')
-        const name: string = this.post('name')
-        const img: string = this.post('img')
-        const place: string = this.post('place')
-        const content: string = this.post('content')
-        const startPrice: string = this.post('startPrice')
-        const endPrice: string = this.post('endPrice')
-        const startTime: string = this.post('startTime')
-        const endTime: string = this.post('endTime')
-        const addTime: string = this.post('addTime')
-        const contactsImg: string = this.post('contactsImg')
+        const timeSlot: string[] = this.post('timeSlot');
+        const id: number = this.post('id');
+        const name: string = this.post('name');
+        const img: string = this.post('img');
+        const place: string = this.post('place');
+        const content: string = this.post('content');
+        const startPrice: string = this.post('startPrice');
+        const endPrice: string = this.post('endPrice');
+        const startTime: string = timeSlot[0];
+        const endTime: string = timeSlot[1];
+        const contactsImg: string = this.post('contactsImg');
         const contactsName: string = this.post('contactsName')
-        const contactsTel: string = this.post('contactsTel')
-        const addtime: string = moment().format('YYYY-MM-DD');
+        const contactsTel: string = this.post('contactsTel');
+        const addTime: string = moment().format('YYYY-MM-DD');
         const state: any = await this.underLineModel['addOrUpdate']({
             id, name, img, place, content, startPrice, endPrice, startTime, endTime, addTime, contactsImg, contactsName, contactsTel
         })

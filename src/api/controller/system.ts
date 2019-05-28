@@ -108,4 +108,39 @@ export default class extends Base {
             return this.fail(errorCode.get(4)['code'], errorCode.get(4)['message']);
         }
     }
+
+    /**
+     *
+     * @api {post} /api/system/addBanner 基础查询
+     * @apiName addBanner
+     * @apiGroup System
+     * @apiDescription 基础查询
+     * @apiParam {array} url
+     * @apiSampleRequest /api/system/addBanner
+     */
+    async addBannerAction() {
+        const urlArr: object[] = this.post('urlArr');
+        if (await this.model('banner').addMany(urlArr)){
+            return this.success(successCode.get(1)['code'], successCode.get(1)['message']);
+        } else {
+            return this.fail(errorCode.get(1)['code'], errorCode.get(1)['message']);
+        }
+    }
+
+    async bannerListAction() { 
+        if (await this.model('banner').select()){
+            return this.success(successCode.get(4)['code'], successCode.get(4)['message']);
+        } else {
+            return this.fail(errorCode.get(4)['code'], errorCode.get(4)['message']);
+        }
+    }
+
+    async updateBannerAction() {
+        const urlArr: object[] = this.post('urlArr');
+        if (await this.model('banner').updateMany(urlArr)){
+            return this.success(successCode.get(2)['code'], successCode.get(2)['message']);
+        } else {
+            return this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
+        }
+    }
 }

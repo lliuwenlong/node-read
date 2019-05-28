@@ -40,7 +40,7 @@ export default class extends Base {
             const fileName = new Date().getTime() + file.name;
             fs.renameSync(file.path, `${publicPath}/${fileName}`);
             const newFile = {...file};
-            newFile.path = `uploadImg/fileName`;
+            newFile.path = `uploadImg/${fileName}`;
             this.success(newFile, successCode.get(API_UPLOADFILE_SUCCESS)['message']);
         } catch (e) {
             think.logger.error(e);

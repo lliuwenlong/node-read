@@ -19,3 +19,16 @@ export const filterObject = (param: object): object => {
     };
     return obj;
 }
+
+export const gcd = (x: number ,  y: number) => {  
+    var max,min,temp;  
+    max = x > y ? x : y ;  
+    min = x < y ? x : y ;  
+    while( max % min ){  
+
+        temp = max % min;  
+        max = min;  
+        min = temp;  
+    }  
+    return min;  
+};

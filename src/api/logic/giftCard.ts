@@ -13,6 +13,9 @@ export default class extends think.Logic {
             process: {
                 string: true
             },
+            content: {
+                string: true
+            },
             coverPhoto: {
                 string: true
             },

@@ -12,4 +12,8 @@ export default class extends think.Model {
     async addMessage(obj: object): Promise<boolean> {
         return !!await this.add(obj);
     }
+
+    async getMessageList(): Promise<object[]> {
+        return await this.select();
+    }
 }

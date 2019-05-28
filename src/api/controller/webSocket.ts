@@ -3,12 +3,12 @@
  */
 import Base from './base.js';
 import moment from 'moment';
-import {
+import { think } from 'thinkjs';import {
     API_SEND_MESSAGE_ERROR,
     API_SEND_MESSAGE_SUCCESS
 } from '../../common/codeConfig/code';
 import {errorCode, successCode} from '../../common/codeConfig/codeConfig';
-export default class extends Base {
+export default class extends think.Controller {
     private messageModel: object = this.model('message')
     constructor(ctx: any) {
         super(ctx);
@@ -32,9 +32,24 @@ export default class extends Base {
                 date
             });
             if (success) {
+                this.websocket.emit('success');
                 this['broadcast']('messagePush', message);
+            } else {
+                this.websocket.emit('error');
             }
         } catch (e) {
         }
+    }
+
+    /**
+     *
+     * @api {post} /api/webSocket/getMessageList 获取消息推送
+     * @apiName getMessageList
+     * @apiGroup Message
+     * @apiSampleRequest /api/webSocket/getMessageList
+     */
+    async getMessageListAction() {
+        const data: object[] = await this.messageModel['getMessageList']();
+        return this.success(data);
     }
 }
