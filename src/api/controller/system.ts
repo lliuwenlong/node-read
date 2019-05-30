@@ -127,9 +127,10 @@ export default class extends Base {
         }
     }
 
-    async bannerListAction() { 
-        if (await this.model('banner').select()){
-            return this.success(successCode.get(4)['code'], successCode.get(4)['message']);
+    async bannerListAction() {
+        const data: object[] = await this.model('banner').select();
+        if (data){
+            return this.success(data, successCode.get(4)['message']);
         } else {
             return this.fail(errorCode.get(4)['code'], errorCode.get(4)['message']);
         }
@@ -141,6 +142,15 @@ export default class extends Base {
             return this.success(successCode.get(2)['code'], successCode.get(2)['message']);
         } else {
             return this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
+        }
+    }
+
+    async delBannerAction() {
+        const id: number = this.post('id');
+        if (await this.model('banner').where({id}).delete()){
+            return this.success(successCode.get(3)['code'], successCode.get(3)['message']);
+        } else {
+            return this.fail(errorCode.get(3)['code'], errorCode.get(3)['message']);
         }
     }
 }
