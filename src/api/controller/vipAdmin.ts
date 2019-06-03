@@ -19,7 +19,7 @@ export default class extends Base {
         const success: boolean = await this.vipModel['setVipPrice'](data);
         return success
             ? this.success(null, successCode.get(2)['message'])
-            : this.fail(errorCode.get(-2)['code'], errorCode.get(-2)['message'])
+            : this.fail(errorCode.get(2)['code'], errorCode.get(2)['message'])
     }
 
     /**
