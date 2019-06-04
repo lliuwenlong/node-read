@@ -70,10 +70,10 @@ export default class extends Base {
      * @apiGroup Curriculum
      * @apiDescription 课程删除
      * @apiParam {number} id Id
-     * @apiSampleRequest /api/curriculum/del
+     * @apiSampleRequest /api/curriculum/delete
      */
-    async delAction() {
-        const id: number = this.post('id');
+    async deleteAction() {
+        const id: number = +this.post('id');
         if (await this.curriculumModel['del'](id))
             return this.success(successCode.get(3)['code'], successCode.get(3)['message']);
         else {

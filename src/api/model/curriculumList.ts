@@ -37,7 +37,7 @@ export default class extends think.Model {
 
     async getCurriculumList(id: number): Promise<object[]> {
         try {
-            const list: object[] = await this.field('id, title, audio, video, type').where({c_id: id}).select();
+            const list: object[] = await this.field('id, title, audio, video, type,addtime, c_id').where({c_id: id}).select();
             return list;
         } catch (e) {
             return [];

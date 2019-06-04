@@ -4,12 +4,8 @@ export default class extends think.Logic {
     setVipPriceAction() {
         this.allowMethods = 'post';
         this.rules = {
-            id: {
-                int: true,
-                required: true
-            },
-            price: {
-                int: true,
+            data: {
+                array: true,
                 required: true
             }
         };

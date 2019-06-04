@@ -5,9 +5,9 @@ export default class extends think.Model {
         return 'read_vip_price';
     }
 
-    async setVipPrice(id: number, price: number): Promise<boolean> {
+    async setVipPrice(data: object[]): Promise<boolean> {
         try {
-            const success: number = await this.where({id}).update({price});
+            const success: number = await this.updateMany(data);
             return !!success;
         } catch (e) {
             return false;

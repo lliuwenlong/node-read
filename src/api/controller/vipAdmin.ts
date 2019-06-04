@@ -13,12 +13,13 @@ export default class extends Base {
      * @apiSampleRequest /api/vipAdmin/setVipPrice
      */
     async setVipPriceAction() {
-        const id: number = this.post('id');
-        const price: number = this.post('price');
-        const success: boolean = await this.vipModel['setVipPrice'](id, price);
+        // const id: number = this.post('id');
+        // const price: number = this.post('price');
+        const data: object[] = this.post('data');
+        const success: boolean = await this.vipModel['setVipPrice'](data);
         return success
             ? this.success(null, successCode.get(2)['message'])
-            : this.fail(errorCode.get(-2)['code'], errorCode.get(-2)['message'])
+            : this.fail(errorCode.get(2)['code'], errorCode.get(2)['message'])
     }
 
     /**

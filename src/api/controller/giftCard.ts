@@ -33,6 +33,7 @@ export default class extends Base {
      * @apiParam {String} process 流程
      * @apiParam {String} coverPhoto 封面图片
      * @apiParam {Boolean} isMod 是否修改
+     * @apiParam {String} content 介绍
      * @apiParam {int} id 
      * @apiSampleRequest /api/giftCard/addGiftCard
      */
@@ -42,6 +43,7 @@ export default class extends Base {
         const process: string = this.post('process');
         const coverPhoto: string = this.post('coverPhoto');
         const date: string = moment().format('YYYY-MM-DD');
+        const content: string = this.post('content');
         const isMod: boolean = !!this.post('isMod');
         const id: number = this.post('id');
         if (!isMod) {
@@ -50,7 +52,8 @@ export default class extends Base {
                 purchase_instructions: purchaseInstructions,
                 process,
                 cover_photo: coverPhoto,
-                addTime: date
+                addTime: date,
+                content
             });
             return isAddSuccess
                 ? this.success(null, successCode.get(1)['message'])
@@ -61,11 +64,12 @@ export default class extends Base {
                 purchase_instructions: purchaseInstructions,
                 process,
                 cover_photo: coverPhoto,
+                content
             };
             const isUpdateSuccess: boolean = await this.giftCardModel['updateGiftCard'](filterObject(param), id);
             return isUpdateSuccess
                 ? this.success(null, successCode.get(2)['message'])
-                : this.fail(errorCode.get(1)['code'], errorCode.get(2)['message']);
+                : this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
         }
     }
 

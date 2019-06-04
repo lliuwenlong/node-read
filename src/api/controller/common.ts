@@ -1,8 +1,9 @@
-import {think} from 'thinkjs';
+import { think } from 'thinkjs';
 import path from 'path';
 import fs from 'fs';
-import {filterObject} from '../../common/util/index';
-import {successCode, errorCode} from '../../common/codeConfig/codeConfig';
+import getPixels from 'get-pixels';
+import { filterObject } from '../../common/util/index';
+import { successCode, errorCode } from '../../common/codeConfig/codeConfig';
 import {
     API_UPLOADFILE_SUCCESS,
     API_UPLOADFILE_ERROR,
@@ -30,17 +31,18 @@ export default class extends Base {
      * @apiParam {file} file 文件
      * @apiSampleRequest /api/common/uploadFile
      */
-    uploadFileAction() {
+    async uploadFileAction() {
         try {
-            const file = this.file('fileUpload');
+            const file = this.file('file');
             const publicPath = path.join(think.ROOT_PATH, 'public/uploadImg');
             if (!think.isDirectory(publicPath)) {
                 think.mkdir(publicPath);
             }
             const fileName = new Date().getTime() + file.name;
             fs.renameSync(file.path, `${publicPath}/${fileName}`);
-            const newFile = {...file};
-            newFile.path = `${publicPath}/${fileName}`;
+            const imgData = await this.getImgSizeAction(`${publicPath}/${fileName}`);
+            const newFile = { ...file, imgSize: imgData };
+            newFile.path = `uploadImg/${fileName}`;
             this.success(newFile, successCode.get(API_UPLOADFILE_SUCCESS)['message']);
         } catch (e) {
             think.logger.error(e);
@@ -72,7 +74,7 @@ export default class extends Base {
             const writerStream = fs.createWriteStream(`${publicPath}/${hash}-${index}`);
             readerStream.pipe(writerStream);
             this.success(null, successCode.get(API_UPLOADFILE_SUCCESS)['message']);
-        } catch(e) {
+        } catch (e) {
             this.fail(API_UPLOADFILE_ERROR, errorCode.get(API_UPLOADFILE_ERROR)['message']);
         }
     }
@@ -108,7 +110,7 @@ export default class extends Base {
             }
             for (let i = 0; i < chunks.length; i++) {
                 fs.appendFileSync(`${this.vdeioBasePath}/${fileName}`,
-                fs.readFileSync(`${this.chunkBasePath}/${hash}/${hash}-${i}`));
+                    fs.readFileSync(`${this.chunkBasePath}/${hash}/${hash}-${i}`));
                 fs.unlinkSync(`${this.chunkBasePath}/${hash}/${hash}-${i}`);
             }
             fs.rmdirSync(this.chunkBasePath + '/' + hash);
@@ -122,7 +124,7 @@ export default class extends Base {
                 errorCode.get(API_UPLOADFILE_ERROR)['message']
             );
         }
-        
+
     }
 
     /**
@@ -135,11 +137,11 @@ export default class extends Base {
      */
     async getCityAction() {
         try {
-            const pid = this.post('pid')?this.post('pid'):1;
+            const pid = this.post('pid') ? this.post('pid') : 1;
             const data = await this.model('city').where({ pid }).select();
-            return this.success(data,successCode.get(4)['message'])
+            return this.success(data, successCode.get(4)['message'])
         } catch (error) {
-            return this.fail(errorCode.get(4)['code'],errorCode.get(4)['message']);
+            return this.fail(errorCode.get(4)['code'], errorCode.get(4)['message']);
         }
     }
 
@@ -203,5 +205,17 @@ export default class extends Base {
             ? this.success(list, successCode.get(4)['message'])
             : this.fail(errorCode.get(4)['code'], errorCode.get(4)['message']);
 
+    }
+
+    private getImgSizeAction(url: string) {
+        return new Promise((resolve, reject) => {
+            getPixels(url, function (err: any, pixels: any) {
+                if (err) {
+                    reject(err)
+                    return
+                }
+                resolve(pixels.shape.slice());
+            })
+        });
     }
 };

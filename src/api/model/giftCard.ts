@@ -15,7 +15,7 @@ export default class extends think.Model {
     }
 
     async getGiftCardList(): Promise<object[]> {
-        const list: object[] = await this.select();
+        const list: object[] = await this.field('id, name, process,cover_photo as coverPhoto, addTime, content, purchase_instructions as purchaseInstructions').select();
         return list;
     }
 

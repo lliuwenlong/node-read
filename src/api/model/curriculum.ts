@@ -5,7 +5,12 @@ import { think } from 'thinkjs';
 
 export default class extends think.Model {
     async getList(obj: object): Promise<Array<Object>> {
-        return await this.where(obj).select()
+        return await this.alias('a').join({
+            table: 'type',
+            join: 'left',
+            as: 't',
+            on: ['type_id', 'id']
+        }).field('a.id, a.title, a.content, a.addtime, a.price, t.name as typeName, a.type_id').where(obj).select()
     }
     
     async addOrUpdate(Obj: object): Promise<any> {
