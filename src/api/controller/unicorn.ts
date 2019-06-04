@@ -18,13 +18,12 @@ export default class extends Base {
      * @api {post} /api/unicorn/getList 独角兽获取
      * @apiName getList
      * @apiGroup Unicorn
-     * @apiParam {number} type_id 分类Id
      * @apiDescription 独角兽获取
      * @apiSampleRequest /api/unicorn/getList
      */
     async getListAction() {
-        const type_id: number = this.post('type_id');
-        const data: Array<object> = await this.unicornModel['getList'](type_id ? { type_id } : null);
+        // const type_id: number = this.post('type_id');
+        const data: Array<object> = await this.unicornModel['getList']();
         return this.success(data, successCode.get(4)['message']);
     }
 
@@ -35,11 +34,14 @@ export default class extends Base {
      * @apiGroup Unicorn
      * 
      * @apiParam {number} id Id
-     * @apiParam {number} type_id 项目类别
+     * @apiParam {string} type 项目类别
      * @apiParam {string} title 标题
      * @apiParam {string} starttime 开播时间
      * @apiParam {string} time 项目时间
      * @apiParam {string} subtitle 副标题
+     * @apiParam {string} name 项目咨询人姓名
+     * @apiParam {string} tel 项目咨询人电话
+     * @apiParam {string} headImg 项目咨询人头像
      * @apiParam {string} place 地点
      * @apiParam {string} basic 基本信息
      * @apiParam {string} details 详细信息
@@ -64,11 +66,14 @@ export default class extends Base {
      */
     async addOrUpdateAction() {
         const id: number = this.post('id');
-        const type_id: number = this.post('type_id');
+        const type: number = this.post('type');
         const title: string = this.post('title');
         const starttime: string = this.post('starttime');
         const time: string = this.post('time');
         const subtitle: string = this.post('subtitle');
+        const name: string = this.post('name');
+        const tel: string = this.post('tel');
+        const headImg: string = this.post('headImg');
         const place: string = this.post('place');
         const basic: string = this.post('basic');
         const details: string = this.post('details');
@@ -82,7 +87,7 @@ export default class extends Base {
         const unicorn_member: Array<object> = this.post('unicorn_member');
 
         const state: any = await this.unicornModel['addOrUpdate']({
-            id, type_id, title, starttime, time, subtitle, place, basic, details, about_info, about_video, addtime
+            id, type, title, subtitle, name, tel, headImg, starttime, time, place, basic, details, about_info, about_video, addtime
         })
         if (typeof (state) === "number") {
             try {
@@ -167,7 +172,7 @@ export default class extends Base {
         } else {
             return this.fail(errorCode.get(1)['code'], errorCode.get(1)['message']);
         }
-        
+
     }
     /**
      *
@@ -182,12 +187,12 @@ export default class extends Base {
     async getGrabAction() {
         const user_id: string = this.post('userId');
         const unicorn_id: string = this.post('unicornId');
-        const data:any =await this.unicornModel['getGrab'](filterObject({ user_id,unicorn_id }));
+        const data: any = await this.unicornModel['getGrab'](filterObject({ user_id, unicorn_id }));
         if (data) {
             return this.success(data, successCode.get(4)['message']);
         } else {
             return this.fail(errorCode.get(4)['code'], errorCode.get(4)['message']);
         }
-        
+
     }
 }

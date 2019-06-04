@@ -4,10 +4,10 @@ export default class extends think.Logic {
     getListAction(){
         this.allowMethods = 'post';
         this.rules = {
-            type_id: {
-                int: true,
-                trim: true
-            },
+            // type_id: {
+            //     int: true,
+            //     trim: true
+            // },
         }
     }
     addOrUpdateAction() {
@@ -17,9 +17,9 @@ export default class extends think.Logic {
                 int: true,
                 trim: true
             },
-            type_id: {
+            type: {
                 required: true,
-                int: true,
+                string: true,
                 trim: true
             },
             title: {
