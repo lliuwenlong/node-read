@@ -5,38 +5,51 @@ export default class extends think.Logic {
         this.allowMethods = 'post';
         this.rules = {
             type_id: {
-                string: true,
+                int: true,
                 trim: true
             },
+            id: {
+                int: true,
+                trim: true
+            }
         }
     }
     addOrUpdateAction() {
         this.allowMethods = 'post';
         this.rules = {
-            id: {
-                number: true,
-                trim: true
-            },
             type_id: {
-                number: true,
-                trim: true
+                int: true,
+                trim: true,
+                required: true
             },
             title: {
                 string: true,
-                trim: true
+                trim: true,
+                required: true
             },
             subtitle: {
                 string: true,
-                trim: true
+                trim: true,
+                required: true
             },
             content: {
                 string: true,
-                trim: true
+                trim: true,
+                required: true
             },
             price: {
-                string: true,
-                trim: true
+                int: true,
+                trim: true,
+                required: true
             },
+            list: {
+                array: true,
+                required: true
+            },
+            cover: {
+                string: true,
+                required: true
+            }
         }
     }
     delAction() {

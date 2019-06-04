@@ -2,12 +2,14 @@
  * @file 课程
  */
 
-import {think} from 'thinkjs';
-import {errorCode, successCode} from '../../common/codeConfig/codeConfig';
+import { think } from 'thinkjs';
+import { errorCode, successCode } from '../../common/codeConfig/codeConfig';
+import {filterObject} from '../../common/util/index';
 import moment from 'moment'
 import Base from './base.js';
 export default class extends Base {
     private curriculumModel: object;
+    private curriculumListModel: object = this.model('curriculumList');
     constructor(ctx: any) {
         super(ctx);
         this.curriculumModel = this.model('curriculum');
@@ -24,7 +26,11 @@ export default class extends Base {
      */
     async getListAction() {
         const type_id: number = this.post('type_id');
-        const data: Array<object> = await this.curriculumModel['getList'](type_id?{ type_id }:null);
+        const id: number = this.post('id');
+        const data: Array<object> = await this.curriculumModel['getList'](filterObject({
+            type_id,
+            'a.id': id
+        }));
         return this.success(data, successCode.get(4)['message']);
     }
 
@@ -50,17 +56,34 @@ export default class extends Base {
         const content: string = this.post('content');
         const price: string = this.post('price');
         const addtime: string = moment().format('YYYY-MM-DD');
-        const state: any = await this.curriculumModel['addOrUpdate']({
-            id, type_id, title, subtitle, content, addtime, price
-        })
-        if (typeof (state) === "number")
-            this.success(`${state}`, successCode.get(1)['message']);
-        else if (state)
-            this.success(successCode.get(2)['code'], successCode.get(2)['message']);
-        else if (!!id)
+        const list: object[] = this.post('list');
+        const cover: object[] = this.post('cover');
+        const deleteId: number[] = this.post('deleteId');
+
+        let state: any = await this.curriculumModel['addOrUpdate']({
+            id, type_id, title, subtitle, content, addtime, price, cover
+        });
+        const curriculum = this.controller('common', 'api');
+        if (typeof (state) === "number") {
+            const listId = await curriculum['addCurriculumListAction']
+                (list.map(item => ({ ...item, c_id: state, addtime: moment().format('YYYY-MM-DD') })));
+            if (listId) {
+                this.success(`${state}`, successCode.get(1)['message']);
+            } else {
+                this.fail(errorCode.get(1)['code'], errorCode.get(1)['message']);
+            }
+        } else if (state) {
+            const status: boolean = await this.curriculumListModel['saveCurriculumList'](deleteId, list, id, 0);
+            if (status) {
+                this.success(successCode.get(2)['code'], successCode.get(2)['message']);
+            } else {
+                this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
+            }
+        } else if (!!id) {
             this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
-        else
+        } else {
             this.fail(errorCode.get(1)['code'], errorCode.get(1)['message']);
+        }
     }
 
     /**

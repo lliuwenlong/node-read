@@ -10,7 +10,7 @@ export default class extends think.Model {
             join: 'left',
             as: 't',
             on: ['type_id', 'id']
-        }).field('a.id, a.title, a.content, a.addtime, a.price, t.name as typeName, a.type_id').where(obj).select()
+        }).field('a.id, a.title, a.content, a.addtime, a.price, t.name as typeName, a.type_id, a.subtitle, a.cover').where(obj).select()
     }
     
     async addOrUpdate(Obj: object): Promise<any> {

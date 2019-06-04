@@ -115,7 +115,7 @@ export default class extends Base {
             }
             fs.rmdirSync(this.chunkBasePath + '/' + hash);
             return this.success(
-                `${this.vdeioBasePath}/${fileName}`,
+                `uploadVdeio/${fileName}`,
                 successCode.get(API_UPLOADFILE_SUCCESS)['message']
             );
         } catch (e) {
@@ -152,8 +152,14 @@ export default class extends Base {
      * @param {String} audio
      * @param {int} type
      */
-    async addCurriculumListAction(content: AddCurriculumListParam[]) {
-        return this.curriculumListModel['addCurriculumList'](content);
+    async addCurriculumListAction(content: AddCurriculumListParam[], id: object) {
+        const success = this.curriculumListModel['delCurriculumList'](id);
+        if (success) {
+            return this.curriculumListModel['addCurriculumList'](content);
+        } else {
+            return 0;
+        }
+        
     }
 
     /**
@@ -166,13 +172,13 @@ export default class extends Base {
      */
     async delCurriculumListAction() {
         const id: number = this.post('id');
-        const success = this.curriculumListModel['delCurriculumList'](id);
+        const type: number = this.post('type');
+        const success = this.curriculumListModel['delCurriculumList'](id, type);
         return success
             ? this.success(null, successCode.get(3)['message'])
             : this.fail(errorCode.get(-3)['code'], errorCode.get(-3)['message']);
 
     }
-
     /**
      *
      * @api {post} /api/common/updateCurriculumList 修改课时
@@ -190,6 +196,9 @@ export default class extends Base {
 
     }
 
+    async saveCurriculumListAction(content: object[]) {
+        return this.curriculumListModel['updateCurriculumList'](content);
+    }
     /**
      *
      * @api {post} /api/common/getCurriculumList 查询课时
@@ -200,7 +209,8 @@ export default class extends Base {
      */
     async getCurriculumListAction() {
         const id: number = this.post('id');
-        const list: object[] = await this.curriculumListModel['getCurriculumList'](id);
+        const type: number = this.post('type');
+        const list: object[] = await this.curriculumListModel['getCurriculumList'](id, type);
         return list
             ? this.success(list, successCode.get(4)['message'])
             : this.fail(errorCode.get(4)['code'], errorCode.get(4)['message']);

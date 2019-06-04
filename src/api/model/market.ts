@@ -5,8 +5,8 @@
 import { think } from 'thinkjs';
 
 export default class extends think.Model {
-    async getList(): Promise<Array<Object>> {
-        return await this.select()
+    async getList(where: object): Promise<Array<Object>> {
+        return await this.where(where).select()
     }
     
     async addOrUpdate(Obj: object): Promise<any> {
