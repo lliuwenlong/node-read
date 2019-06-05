@@ -23,7 +23,14 @@ export default class extends Base {
      */
     async getListAction() {
         // const type_id: number = this.post('type_id');
-        const data: Array<object> = await this.unicornModel['getList']();
+        let data: Array<object> = await this.unicornModel['getList']();
+        data = data.map(v => {
+            v['details'] = JSON.parse(v['details'])
+            v['unicorn_videos'] = JSON.parse(v['unicorn_videos'])
+            v['unicorn_tags'] = v['unicorn_tags'].map(v => v.tags_id)
+            v['unicorn_city'] = v['citys'].split(',')
+            return v
+        })
         return this.success(data, successCode.get(4)['message']);
     }
 
@@ -44,7 +51,7 @@ export default class extends Base {
      * @apiParam {string} headImg 项目咨询人头像
      * @apiParam {string} place 地点
      * @apiParam {string} basic 基本信息
-     * @apiParam {string} details 详细信息
+     * @apiParam {array} details 详细信息
      * @apiParam {string} about_info 相关资讯
      * @apiParam {string} about_video 相关视频
      * @apiParam {array} unicorn_tags 标签Id
@@ -68,35 +75,37 @@ export default class extends Base {
         const id: number = this.post('id');
         const type: number = this.post('type');
         const title: string = this.post('title');
-        const starttime: string = this.post('starttime');
         const time: string = this.post('time');
         const subtitle: string = this.post('subtitle');
         const name: string = this.post('name');
         const tel: string = this.post('tel');
         const headImg: string = this.post('headImg');
-        const place: string = this.post('place');
+        const place: string = this.post('place').join('-');
         const basic: string = this.post('basic');
-        const details: string = this.post('details');
-        const about_info: string = this.post('about_info');
-        const about_video: string = this.post('about_video');
+        const details: string = JSON.stringify(this.post('details'));
+        // const about_info: string = this.post('about_info');
+        const unicorn_videos: string = JSON.stringify(this.post('unicorn_videos'));
+        const citys: Array<object> = this.post('unicorn_city').join(',');
         const addtime: string = moment().format('YYYY-MM-DD');
 
-        const unicorn_tags: Array<object> = this.post('unicorn_tags');
-        const unicorn_city: Array<object> = this.post('unicorn_city');
+        let unicorn_tags: Array<object> = this.post('unicorn_tags');
         const unicorn_info: Array<object> = this.post('unicorn_info');
         const unicorn_member: Array<object> = this.post('unicorn_member');
 
         const state: any = await this.unicornModel['addOrUpdate']({
-            id, type, title, subtitle, name, tel, headImg, starttime, time, place, basic, details, about_info, about_video, addtime
+            id, type, title, subtitle, name, tel, headImg, time, place, basic, details, unicorn_videos, citys, addtime
         })
         if (typeof (state) === "number") {
             try {
-                unicorn_tags.map(v => v['unicorn_id'] = state);
-                unicorn_city.map(v => v['unicorn_id'] = state);
+                unicorn_tags = unicorn_tags.map(v => {
+                    let data = {}
+                    data['tags_id'] = v
+                    data['unicorn_id'] = state
+                    return data
+                });
                 unicorn_info.map(v => v['unicorn_id'] = state);
                 unicorn_member.map(v => v['unicorn_id'] = state);
                 await this.model('unicorn_tags_join').addMany(unicorn_tags);
-                await this.model('unicorn_city_join').addMany(unicorn_city);
                 await this.model('unicorn_info').addMany(unicorn_info);
                 await this.model('unicorn_member').addMany(unicorn_member);
                 this.success(`${state}`, successCode.get(1)['message']);
@@ -108,16 +117,14 @@ export default class extends Base {
         }
         else if (state) {
             try {
-                unicorn_tags.map(v => v['unicorn_id'] = id);
-                unicorn_city.map(v => v['unicorn_id'] = id);
                 unicorn_info.map(v => v['unicorn_id'] = id);
+                unicorn_tags.map(v => v['unicorn_id'] = id);
                 unicorn_member.map(v => v['unicorn_id'] = id);
                 await this.model('unicorn_tags_join').where({ unicorn_id: id }).delete();
-                await this.model('unicorn_city_join').where({ unicorn_id: id }).delete();
                 await this.model('unicorn_info').where({ unicorn_id: id }).delete();
                 await this.model('unicorn_member').where({ unicorn_id: id }).delete();
+                console.log(unicorn_tags)
                 await this.model('unicorn_tags_join').addMany(unicorn_tags);
-                await this.model('unicorn_city_join').addMany(unicorn_city);
                 await this.model('unicorn_info').addMany(unicorn_info);
                 await this.model('unicorn_member').addMany(unicorn_member);
                 this.success(successCode.get(2)['code'], successCode.get(2)['message']);

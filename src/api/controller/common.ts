@@ -132,13 +132,25 @@ export default class extends Base {
      * @api {post} /api/common/getCity 省市县获取
      * @apiName getCity
      * @apiGroup Common
-     * @apiParam {int} pid 父级id（默认1为省）
+     * @apiParam {int} pid 父级id（默认3级全部数据，查询省传1）
      * @apiSampleRequest /api/common/getCity
      */
     async getCityAction() {
         try {
-            const pid = this.post('pid') ? this.post('pid') : 1;
-            const data = await this.model('city').where({ pid }).select();
+            const pid = this.post('pid');
+            let where=pid?{ pid }:{};
+            let data = await this.model('city').where(where).select();
+            if(!pid){
+                for (const key in data) {
+                    for (const key1 in data) {
+                        if(data[key].pid==data[key1].id){
+                            data[key1].children=data[key1].children?data[key1].children.concat([data[key]]):[data[key]];
+                            break;
+                        }
+                    }
+                }
+                data=data[0];
+            }
             return this.success(data, successCode.get(4)['message'])
         } catch (error) {
             return this.fail(errorCode.get(4)['code'], errorCode.get(4)['message']);

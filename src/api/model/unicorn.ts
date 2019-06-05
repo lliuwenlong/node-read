@@ -14,11 +14,11 @@ export default class extends think.Model {
                 rModel: 'unicorn_tags_join',
                 rfKey: 'tags_id'
             },
-            city: {
-                type: think.Model.MANY_TO_MANY,
-                rModel: 'unicorn_city_join',
-                rfKey: 'city_id'
-            }
+            // city: {
+            //     type: think.Model.MANY_TO_MANY,
+            //     rModel: 'unicorn_city_join',
+            //     rfKey: 'city_id'
+            // }
         };
     }
 

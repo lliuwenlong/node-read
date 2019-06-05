@@ -40,7 +40,7 @@ export default class extends think.Logic {
                 trim: true
             },
             place: {
-                string: true,
+                array: true,
                 trim: true
             },
             basic: {
@@ -48,7 +48,7 @@ export default class extends think.Logic {
                 trim: true
             },
             details: {
-                string: true,
+                array: true,
                 trim: true
             },
             about_info: {
