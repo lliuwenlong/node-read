@@ -5,8 +5,10 @@
 import {errorCode, successCode} from '../../common/codeConfig/codeConfig';
 import moment from 'moment'
 import Base from './base.js';
+import { filterObject } from '../../common/util/index';
 export default class extends Base {
     private marketModel: object;
+    private curriculumListModel: object = this.model('curriculumList');
     constructor(ctx: any) {
         super(ctx);
         this.marketModel = this.model('market');
@@ -21,7 +23,8 @@ export default class extends Base {
      * @apiSampleRequest /api/market/getList
      */
     async getListAction() {
-        const data: Array<object> = await this.marketModel['getList']();
+        const id: number = this.post('id');
+        const data: Array<object> = await this.marketModel['getList'](filterObject({id}));
         return this.success(data, successCode.get(4)['message']);
     }
 
@@ -42,24 +45,44 @@ export default class extends Base {
      */
     async addOrUpdateAction() {
         const id: number = this.post('id');
-        const  name:string = this.post('name');
-        const  img:string = this.post('img');
-        const  speaker:string = this.post('speaker');
-        const  basic:string = this.post('basic');
-        const  price:string = this.post('price');
-        const  vipPrice:string = this.post('vipPrice');
+        const name:string = this.post('name');
+        const img:string = this.post('img');
+        const speaker:string = this.post('speaker');
+        const basic:string = this.post('basic');
+        const price:string = this.post('price');
+        const vipPrice:string = this.post('vipPrice');
         const addtime: string = moment().format('YYYY-MM-DD');
+        const subtitle:string = this.post('subtitle');
+        const content: string = this.post('content');
+        const list: object[] = this.post('list');
+        const deleteId: number[] = this.post('deleteId');
+
         const state: any = await this.marketModel['addOrUpdate']({
-            id, name, img, speaker, basic, price, vipPrice, addtime
+            id, name, img, speaker, basic, price, vipPrice, addtime, subtitle, content
         })
-        if (typeof (state) === "number")
-            this.success(`${state}`, successCode.get(1)['message']);
-        else if (state)
-            this.success(successCode.get(2)['code'], successCode.get(2)['message']);
-        else if (!!id)
+        if (typeof (state) === "number") {
+            const curriculum = this.controller('common', 'api');
+            const listId = await curriculum['addCurriculumListAction']
+                (list.map(item => ({ ...item, c_id: state, addtime: moment().format('YYYY-MM-DD') })));
+            if (listId) {
+                this.success(`${state}`, successCode.get(1)['message']);
+            } else {
+                this.fail(errorCode.get(1)['code'], errorCode.get(1)['message']);
+            }
+        } else if (state) {
+            const status: boolean = await this.curriculumListModel['saveCurriculumList'](deleteId, list, id, 1);
+            if (status) {
+                this.success(successCode.get(2)['code'], successCode.get(2)['message']);
+            } else {
+                this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
+            }
+        }
+        else if (!!id) {
             this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
-        else
+        }
+        else {
             this.fail(errorCode.get(1)['code'], errorCode.get(1)['message']);
+        }
     }
 
     /**
