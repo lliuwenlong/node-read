@@ -15,9 +15,9 @@ export default class extends think.Model {
             return 0;
         }     
     }
-    async accountUp(data: object,id: number): Promise<boolean> {
+    async accountUp(data: object[]): Promise<boolean> {
         try {
-            const succee: number = await this.where({id}).update(data);
+            const succee: number = await this.updateMany(data);
             return !!succee;
         } catch (e) {
             return false;

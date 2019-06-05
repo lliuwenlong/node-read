@@ -39,10 +39,8 @@ export default class extends Base {
      */
 
     async accountupAction(){
-        const id: string = this.post('id');
-        const wisdom_currency: string = this.post('wisdom_currency');
-        const price: number = this.post('price');
-        const success: boolean = await this.account['accountUp']({wisdom_currency,price},id)
+        const data: object[] = this.post('data');
+        const success: boolean = await this.account['accountUp'](data);
         return success
             ? this.success(null, successCode.get(2)['message'])
             : this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
