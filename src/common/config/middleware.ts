@@ -47,6 +47,14 @@ module.exports = [
 		enable: true,
 		options: {
 			root: path.join(think.ROOT_PATH, 'public'),
+			publicPath: /^\/(admin|favicon\.ico)/
+		}
+	},
+	{
+		handle: 'resource',
+		enable: true,
+		options: {
+			root: path.join(think.ROOT_PATH, 'public'),
 			publicPath: /^\/(uploadVdeio|favicon\.ico)/
 		}
 	},
