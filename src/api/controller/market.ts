@@ -102,4 +102,24 @@ export default class extends Base {
             return this.fail(errorCode.get(3)['code'], errorCode.get(3)['message']);
         }
     }
+
+     /**
+     *
+     * @api {post} /api/market/receive 修改课程是否签到领取
+     * @apiName receive
+     * @apiGroup market
+     * @apiDescription 修改课程是否签到领取
+     * @apiParam {number} id Id
+     * @apiSampleRequest /api/market/receive
+     */
+
+    async receiveAction() {
+        const id: number = this.post('id');
+        const type: number = this.post('type');
+        if (await this.marketModel['receive'](id,type))
+            return this.success(successCode.get(5)['code'], successCode.get(5)['message']);
+        else {
+            return this.fail(errorCode.get(5)['code'], errorCode.get(5)['message']);
+        }
+    }
 }

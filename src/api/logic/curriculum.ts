@@ -62,4 +62,20 @@ export default class extends think.Logic {
             },
         }
     }
+
+    receiveAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            id: {
+                required: true,
+                number: true,
+                trim: true
+            },
+            type: {
+                required: true,
+                number: true,
+                trim: true
+            },
+        }
+    }
 }

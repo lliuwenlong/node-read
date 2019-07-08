@@ -7,6 +7,7 @@ export const successCode = new Map<number, object>([
     [2, {code: 2, message: '修改成功'}],
     [3, {code: 3, message: '删除成功'}],
     [4, {code: 4, message: '查询成功'}],
+    [5, {code: 5, message: '操作成功'}],
     [
         config.API_REGISTER_SUCCESS,
         {code: config.API_REGISTER_SUCCESS, message: '注册成功'}
@@ -34,6 +35,7 @@ export const errorCode = new Map<number, object>([
     [2, {code: -2, message: '修改失败'}],
     [3, {code: -3, message: '删除失败'}],
     [4, {code: -4, message: '查询失败'}],
+    [5, {code: -5, message: '操作成功'}],
     [
         config.API_REGISTER_CODE_ERROR,
         {code: config.API_REGISTER_CODE_ERROR, message: '验证码错误'}

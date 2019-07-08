@@ -76,17 +76,29 @@ export default class extends Base {
      * @apiName setBasic
      * @apiGroup System
      * @apiDescription 基础设置
-     * @apiParam {number} status 1:联系客服电话，2:banner管理，3:用户指南，4:关于我们，5:签到规则设置
+     * @apiParam {number} status 1: 联系客服电话   2:banner管理  3:用户指南 4:关于我们  5:签到规则设置 6 购买慧币流程 7 购买慧币须知 8 礼品卡购买流程
+
      * @apiParam {string} text 内容
+     * @apiParam {int} id id
      * @apiSampleRequest /api/system/setBasic
      */
     async setBasicAction() {
         const status: number = this.post('status');
         const text: string = this.post('text');
-        if (await this.model('basic_set').where({status}).update({text})){
-            return this.success(successCode.get(2)['code'], successCode.get(2)['message']);
+        const id: string = this.post('id');
+        const name: string = this.post('name');
+        let list = '';
+        let data = '';
+        if(!id){
+            list = await this.model('basic_set').add({name,status,text});
+            data = await this.query('select * from read_basic_set where id = '+list);
+        }else{
+            list = await this.model('basic_set').where({id}).update({name,text});
+        }
+        if (list){
+            return this.success(data,successCode.get(5)['message']);
         } else {
-            return this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
+            return this.fail(errorCode.get(5)['code'], errorCode.get(5)['message']);
         }
     }
 
@@ -101,7 +113,7 @@ export default class extends Base {
      */
     async BasicAction() {
         const status: number = this.post('status');
-        const data:Array<object> = await this.model('basic_set').where(filterObject({status})).select()
+        const data:Array<object> = await this.model('basic_set').where(filterObject({status})).select();
         if (data){
             return this.success(data, successCode.get(4)['message']);
         } else {
@@ -153,4 +165,24 @@ export default class extends Base {
             return this.fail(errorCode.get(3)['code'], errorCode.get(3)['message']);
         }
     }
+
+ /**
+     *
+     * @api {post} /api/system/delBasic 删除基础设置
+     * @apiName delBasic
+     * @apiGroup System
+     * @apiDescription 删除基础设置
+     * @apiParam {int} id id
+     * @apiSampleRequest /api/system/delBasic
+     */
+    async delBasicAction() {
+          const id: string = this.post('id');
+          const list = await this.model('basic_set').where({id}).delete();
+        if (list){
+            return this.success(successCode.get(2)['code'], successCode.get(2)['message']);
+        } else {
+            return this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
+        }
+    }
 }
+

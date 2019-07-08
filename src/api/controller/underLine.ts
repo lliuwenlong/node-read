@@ -64,8 +64,9 @@ export default class extends Base {
         const contactsName: string = this.post('contactsName')
         const contactsTel: string = this.post('contactsTel');
         const addTime: string = moment().format('YYYY-MM-DD');
+        const type_id: number = this.post('type_id');
         const state: any = await this.underLineModel['addOrUpdate']({
-            id, name, img, place, content, startPrice, endPrice, startTime, endTime, addTime, contactsImg, contactsName, contactsTel
+            id, name, img, place, content, startPrice, endPrice, startTime, endTime, addTime, contactsImg, contactsName, contactsTel, type_id
         })
         if (typeof (state) === "number")
             this.success(`${state}`, successCode.get(1)['message']);
@@ -93,4 +94,72 @@ export default class extends Base {
             return this.fail(errorCode.get(3)['code'], errorCode.get(3)['message']);
         }
     }
+
+    /**
+     * @api {post} /api/underLine/citylist 线下活动展示地区
+     * @apiName citylist
+     * @apiGroup underLine
+     * @apiDescription 线下活动展示地区
+     * @apiSampleRequest /api/underLine/citylist
+     */
+    async citylistAction(){
+        const data: object[] = await this.underLineModel['citylist']();
+        return this.success(data, successCode.get(4)['message']);
+    }
+
+
+
+     /**
+     *
+     * @api {post}  /api/underLine/undertype 线下活动type
+     * @apiName undertype
+     * @apiGroup underLine
+     * @apiSampleRequest /api/underLine/undertype
+     */
+
+    async undertypeAction(){
+        const list: object[] = await this.underLineModel['undertype']();
+        return this.success(list, successCode.get(4)['message']);
+    }
+/**
+     *
+     * @api {post}  /api/underLine/undertypeDel 线下活动type删除
+     * @apiName undertypeDel
+     * @apiGroup underLine
+     * @apiParam {number}	id	ID
+     * @apiSampleRequest /api/underLine/undertypeDel
+     */
+
+    async undertypeDelAction(){
+        const id: number = this.post('id');
+        const del: boolean = await this.underLineModel['undertypeDel'](id);
+        return del
+        ? this.success(null, successCode.get(3)['message'])
+        : this.fail(errorCode.get(3)['code'], errorCode.get(3)['message']);
+    }
+
+
+     /**
+     *
+     * @api {post} /api/underLine/undertypeadd 添加线下typeadd
+     * @apiName undertypeadd
+     * @apiParam {string} type_name name
+     * @apiParam {int} id id
+     * @apiGroup underLine
+     * @apiSampleRequest /api/underLine/undertypeadd
+     */
+
+    async undertypeaddAction(){
+        const type_name: string = this.post('type_name');
+        const id: string = this.post('id');
+        const success: boolean = await this.underLineModel['undertypeadd']({
+            type_name,
+            id,
+            addtime: moment().format('YYYY-MM-DD')
+        });
+        return success
+            ? this.success(null, successCode.get(1)['message'])
+            : this.fail(errorCode.get(1)['code'], errorCode.get(1)['message']);
+    }
+
 }

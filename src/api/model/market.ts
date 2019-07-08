@@ -5,6 +5,16 @@
 import { think } from 'thinkjs';
 
 export default class extends think.Model {
+    get relation() {
+        return {
+            'curriculum_list': {
+                type: think.Model.HAS_MANY,
+                key: 'id',
+                fKey: 'c_id'
+            }
+        }
+    }
+
     async getList(where: object): Promise<Array<Object>> {
         return await this.where(where).select()
     }
@@ -26,6 +36,19 @@ export default class extends think.Model {
     async del(id: number): Promise<boolean> {
         try {
             return !!await this.where({id}).delete()
+        } catch (e) {
+            return false
+        }
+    }
+
+    async receive(id: number,type:number): Promise<boolean> {
+        
+        try {
+            if(type == 0){
+                return !!await this.table('curriculum_list').where({id}).update({receive:0});
+            }else{
+                return !!await this.table('curriculum_list').where({id}).update({receive:1});
+            }
         } catch (e) {
             return false
         }

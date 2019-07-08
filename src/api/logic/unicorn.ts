@@ -79,6 +79,11 @@ export default class extends think.Logic {
                 array: true,
                 trim: true
             },
+            type_ids: {
+                required: true,
+                int: true,
+                trim: true
+            },
         }
     }
     delAction() {
@@ -119,4 +124,30 @@ export default class extends think.Logic {
             },
         }
     }
+
+    undertypeDelAction(){
+        this.allowMethods = 'post';
+        this.rules = {
+            id: {
+                int: true,
+                trim: true
+            },
+        }
+    }
+
+    undertypeaddAction(){
+        this.allowMethods = 'post';
+        this.rules = {
+            type_name: {
+                string: true,
+                trim: true
+            },
+            id: {
+                required: false,
+                int: true,
+                trim: true
+            },
+        }
+    }
+
 }

@@ -16,6 +16,7 @@ export default class extends think.Model {
     get tableName() {
         return 'read_curriculum_list';
     }
+
     async addCurriculumList(addData: object[]): Promise<boolean> {
         try {
             const id: string[] = await this.addMany(addData);
@@ -45,7 +46,7 @@ export default class extends think.Model {
 
     async getCurriculumList(id: number, type: number): Promise<object[]> {
         try {
-            const list: object[] = await this.field('id, title, audio, video, type,addtime, c_id').where({c_id: id, type}).select();
+            const list: object[] = await this.field('id, title, audio, video, type,addtime, c_id,receive').where({c_id: id, type}).select();
             return list;
         } catch (e) {
             return [];

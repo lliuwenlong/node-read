@@ -38,4 +38,39 @@ export default class extends think.Model {
             return false
         }
     }
+
+    async citylist(): Promise<any> {
+        const data: Array<object> =  await this.query('select * from read_city where type = 1');
+        return data;
+    }
+
+    async undertype(): Promise<object[]> {
+        const list: object[] = await this.query('select * from read_under_line_type');
+        return list;
+     }
+
+
+     async undertypeDel(id: number): Promise<boolean> {
+        try{
+            const del :number = await this.query('delete from read_under_line_type where id = '+id);
+            return !!del;
+        }catch(e){
+            return false;
+        } 
+    }
+
+    async undertypeadd(data: object): Promise<number> {  
+     
+        try{
+            if(!data.id){
+                const res: string =  await this.table('under_line_type').add(data);
+                return +res;
+            }else{
+                const res: number = await this.table('under_line_type').update(data);
+                return +res;
+            }
+        }catch (e) {
+            return 0;
+        }     
+    }
 }
