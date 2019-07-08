@@ -123,4 +123,16 @@ export default class extends think.Logic {
             }
         }
     }
+
+    getOrderListAction () {
+        this.allowMethods = 'post';
+        this.rules = {
+            type: {
+                int: true
+            },
+            mentmethodType: {
+                int: true
+            }
+        }
+    }
 }

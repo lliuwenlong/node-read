@@ -56,9 +56,10 @@ export default class extends Base {
         const content: string = this.post('content');
         const list: object[] = this.post('list');
         const deleteId: number[] = this.post('deleteId');
+        const type: number = this.post('type');
 
         const state: any = await this.marketModel['addOrUpdate']({
-            id, name, img, speaker, basic, price, vipPrice, addtime, subtitle, content
+            id, name, img, speaker, basic, price, vipPrice, addtime, subtitle, content, type
         })
         if (typeof (state) === "number") {
             const curriculum = this.controller('common', 'api');
@@ -71,6 +72,7 @@ export default class extends Base {
             }
         } else if (state) {
             const status: boolean = await this.curriculumListModel['saveCurriculumList'](deleteId, list, id, 1);
+            console.log(status);
             if (status) {
                 this.success(successCode.get(2)['code'], successCode.get(2)['message']);
             } else {

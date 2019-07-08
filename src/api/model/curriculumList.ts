@@ -60,11 +60,12 @@ export default class extends think.Model {
             const modContent: Array<modCurriculumListParam> = content.filter(item => !!item.id);
             await this.startTrans();
             deleteId.length && await this.where({id: ['in', deleteId.join(',')], type}).delete();
-            modContent.length && await this.where({type}).updateMany(modContent)
+            modContent.length && await this.updateMany(modContent)
             addContent.length && await this.addMany(addContent);
             await this.commit();
             return true;
         } catch (e) {
+            console.log(e);
             await this.rollback();
             return false;
         }
