@@ -10,6 +10,7 @@ import { errorCode, successCode } from '../../common/codeConfig/codeConfig';
 import {filterObject} from '../../common/util/index';
 import md5 from 'js-md5';
 import moment from 'moment';
+import {OrderList} from '../Interfaces/user';
 import {
     API_REGISTER_CODE_ERROR,
     API_REGISTER_SUCCESS,
@@ -23,9 +24,11 @@ import {
 } from '../../common/codeConfig/code';
 export default class extends think.Controller {
     private userModel: object;
+    private orderList: object;
     constructor(ctx: any) {
         super(ctx);
         this.userModel = this.model('user');
+        this.orderList = this.model('orderList');
     }
     /**
      *
@@ -281,6 +284,25 @@ export default class extends think.Controller {
 
     async getUserGuideAction() {
         const list: object[] = await this.userModel['getUserGuide']();
-        return this.success(list, successCode.get(4)['message'])
+        
+    }
+
+    /**
+     *
+     * @api {post} /api/user/getOrderList 订单列表
+     * @apiName getOrderList
+     * @apiGroup User
+     * @apiParam {int} type
+     * @apiParam {int} mentmethodType
+     * @apiSampleRequest /api/user/getOrderList
+     */
+    async getOrderListAction() {
+        const type: number = this.post('type');
+        const mentmethod: number = this.post('mentmethodType');
+        const list: OrderList[] = await this.orderList['getOrderList'](filterObject({
+            type,
+            mentmethod
+        }));
+        return this.success(list, successCode.get(4)['message']);
     }
 };

@@ -1,5 +1,4 @@
 import { think } from 'thinkjs';
-import { promises } from 'fs';
 
 export default class extends think.Model {
     
