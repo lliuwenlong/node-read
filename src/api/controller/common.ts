@@ -157,6 +157,14 @@ export default class extends Base {
         }
     }
 
+    async getAllCityAction() {
+        try {
+            let data = await this.model('city').where({}).select();
+            return this.success(data, successCode.get(4)['message'])
+        } catch (error) {
+            return this.fail(errorCode.get(4)['code'], errorCode.get(4)['message']);
+        }
+    }
     /**
      *
      * @param {String} title

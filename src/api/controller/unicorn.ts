@@ -82,9 +82,11 @@ export default class extends Base {
         const name: string = this.post('name');
         const tel: string = this.post('tel');
         const headImg: string = this.post('headImg');
-        const place: string = this.post('place').join('-');
+        // const place: string = this.post('place').join('-');
+
         const basic: string = this.post('basic');
         const details: string = JSON.stringify(this.post('details'));
+
         // const about_info: string = this.post('about_info');
         const unicorn_videos: string = JSON.stringify(this.post('unicorn_videos'));
         const citys: Array<object> = this.post('unicorn_city').join(',');
@@ -95,8 +97,8 @@ export default class extends Base {
         const unicorn_member: Array<object> = this.post('unicorn_member');
 
         const state: any = await this.unicornModel['addOrUpdate']({
-            id, type, title, subtitle, name, tel, headImg, time, place, basic, details, unicorn_videos, citys, addtime
-        })
+            id, type, title, subtitle, name, tel, headImg, time, basic, details, unicorn_videos, citys, addtime
+        });
         if (typeof (state) === "number") {
             try {
                 unicorn_tags = unicorn_tags.map(v => {
