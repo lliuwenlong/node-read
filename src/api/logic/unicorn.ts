@@ -79,11 +79,11 @@ export default class extends think.Logic {
                 array: true,
                 trim: true
             },
-            type_ids: {
-                required: true,
-                int: true,
-                trim: true
-            },
+            // type_ids: {
+            //     required: true,
+            //     int: true,
+            //     trim: true
+            // },
         }
     }
     delAction() {

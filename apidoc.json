@@ -7,7 +7,7 @@
     "sampleUrl": "",
     "forceLanguage":"zh-cn",
     "template": {
-      "withCompare": true,
-      "withGenerator": true
+        "withCompare": true,
+        "withGenerator": true
     }
 }

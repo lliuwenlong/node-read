@@ -57,7 +57,7 @@ export default class extends think.Logic {
         this.rules = {
             id: {
                 required: true,
-                number: true,
+                int: true,
                 trim: true
             },
         }
@@ -68,14 +68,30 @@ export default class extends think.Logic {
         this.rules = {
             id: {
                 required: true,
-                number: true,
+                int: true,
                 trim: true
             },
             type: {
                 required: true,
-                number: true,
+                int: true,
+                trim: true
+            }
+        }
+    }
+
+    changeSendOutAction () {
+        this.allowMethods = 'post';
+        this.rules = {
+            id: {
+                required: true,
+                int: true,
                 trim: true
             },
+            status: {
+                required: true,
+                int: true,
+                trim: true
+            }
         }
     }
 }

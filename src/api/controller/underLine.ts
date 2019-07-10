@@ -5,11 +5,14 @@
 import { errorCode, successCode } from '../../common/codeConfig/codeConfig';
 import moment from 'moment'
 import Base from './base.js';
+import { filterObject } from '../../common/util/index';
 export default class extends Base {
     private underLineModel: object;
+    private underLineUserJoin: object;
     constructor(ctx: any) {
         super(ctx);
         this.underLineModel = this.model('under_line');
+        this.underLineUserJoin = this.model('underLineUserJoin');
     }
 
     /**
@@ -65,8 +68,14 @@ export default class extends Base {
         const contactsTel: string = this.post('contactsTel');
         const addTime: string = moment().format('YYYY-MM-DD');
         const type_id: number = this.post('type_id');
+        const num: number = this.post('num');
+        const attr_id: number = this.post('attr_id');
+
         const state: any = await this.underLineModel['addOrUpdate']({
-            id, name, img, place, content, startPrice, endPrice, startTime, endTime, addTime, contactsImg, contactsName, contactsTel, type_id
+            id, name, img, place, content,
+            startPrice, endPrice, startTime,
+            endTime, addTime, contactsImg,
+            contactsName, contactsTel, type_id, num, attr_id
         })
         if (typeof (state) === "number")
             this.success(`${state}`, successCode.get(1)['message']);
@@ -162,4 +171,14 @@ export default class extends Base {
             : this.fail(errorCode.get(1)['code'], errorCode.get(1)['message']);
     }
 
+    async getSignUpListAction() {
+        const title: number = this.post('title');
+        const name: number = this.post('name');
+        const where: object = filterObject({
+            title,
+            name
+        });
+        const list: object[] = await this.underLineUserJoin['getList']({});
+        return this.success(list, successCode.get(4)['message']);
+    }
 }

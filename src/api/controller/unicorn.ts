@@ -8,9 +8,11 @@ import moment from 'moment'
 import Base from './base.js';
 export default class extends Base {
     private unicornModel: object;
+    private seizeModel: object;
     constructor(ctx: any) {
         super(ctx);
         this.unicornModel = this.model('unicorn');
+        this.seizeModel = this.model('seize');
     }
 
     /**
@@ -27,7 +29,7 @@ export default class extends Base {
         data = data.map(v => {
             v['details'] = JSON.parse(v['details'])
             v['unicorn_videos'] = JSON.parse(v['unicorn_videos'])
-            v['unicorn_tags'] = v['unicorn_tags'].map(v => v.tags_id)
+            v['unicorn_tags'] = v['unicorn_tags'].map(v => v.id)
             v['unicorn_city'] = v['citys'].split(',')
             return v
         })
@@ -200,6 +202,34 @@ export default class extends Base {
         } else {
             return this.fail(errorCode.get(4)['code'], errorCode.get(4)['message']);
         }
+    }
 
+    async getSeizeAction () {
+        const name: string = this.post('name');
+        const tel: string = this.post('tel');
+        const title: string = this.post('title');
+        let where: object = {};
+        if (name) {
+            where['u.username|u.name'] = ['like', `${name}%`];
+        }
+        if (tel) {
+            where['u.tel'] = ['like', `${tel}%`];
+        }
+        if (title) {
+            where['n.title'] = ['like', `${title}%`];
+        }
+        const list: object[] = await this.seizeModel['getList'](where);
+        return this.success(list, successCode.get(4)['message']);
+    }
+
+    async changeIsSignAction () {
+        const id: number = this.post('id');
+        const status: number = this.post('status');
+        const success: boolean = await this.seizeModel['changeIsSign'](id, status);
+        if (success) {
+            return this.success(successCode.get(2)['code'], successCode.get(2)['message']);
+        } else {
+            return this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
+        }
     }
 }

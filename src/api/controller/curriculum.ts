@@ -7,9 +7,11 @@ import { errorCode, successCode } from '../../common/codeConfig/codeConfig';
 import {filterObject} from '../../common/util/index';
 import moment from 'moment'
 import Base from './base.js';
+
 export default class extends Base {
     private curriculumModel: object;
     private curriculumListModel: object = this.model('curriculumList');
+    private curriculumOrderModel: object = this.model('curriculumOrder');
     constructor(ctx: any) {
         super(ctx);
         this.curriculumModel = this.model('curriculum');
@@ -59,9 +61,16 @@ export default class extends Base {
         const list: object[] = this.post('list');
         const cover: object[] = this.post('cover');
         const deleteId: number[] = this.post('deleteId');
+        const is_setmeal: object[] = this.post('is_setmeal');
+        const lower_price: number[] = this.post('lower_price');
+        const intermediate_price: object[] = this.post('intermediate_price');
+        const senior_price: number[] = this.post('senior_price');
 
         let state: any = await this.curriculumModel['addOrUpdate']({
-            id, type_id, title, subtitle, content, addtime, price, cover
+            id, type_id, title, subtitle,
+            content, addtime, price, cover,
+            is_setmeal, lower_price,
+            intermediate_price, senior_price
         });
         const curriculum = this.controller('common', 'api');
         if (typeof (state) === "number") {
@@ -101,6 +110,35 @@ export default class extends Base {
             return this.success(successCode.get(3)['code'], successCode.get(3)['message']);
         else {
             return this.fail(errorCode.get(3)['code'], errorCode.get(3)['message']);
+        }
+    }
+    
+    async getSeizeAction () {
+        const name: string = this.post('name');
+        const tel: string = this.post('tel');
+        const title: string = this.post('title');
+        let where: object = {};
+        if (name) {
+            where['u.username|u.name'] = ['like', `${name}%`];
+        }
+        if (tel) {
+            where['u.tel'] = ['like', `${tel}%`];
+        }
+        if (title) {
+            where['c.title'] = ['like', `${title}%`];
+        }
+        const data: object[] = await this.curriculumOrderModel['getList'](where);
+        this.success(data, successCode.get(1)['message']);
+    }
+
+    async changeSendOutAction () {
+        const id: number = this.post('id');
+        const status: number = this.post('status');
+        const success: boolean = await this.curriculumOrderModel['changeSendOut'](id, status);
+        if (success) {
+            return this.success(successCode.get(2)['code'], successCode.get(2)['message']);
+        } else {
+            return this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
         }
     }
 }
