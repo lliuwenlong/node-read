@@ -83,7 +83,8 @@ export default class extends Base {
         const tel: string = this.post('tel');
         const headImg: string = this.post('headImg');
         // const place: string = this.post('place').join('-');
-
+        const img: string = this.post('img');
+        const relevant_information: string = this.post('relevant_information');
         const basic: string = this.post('basic');
         const details: string = JSON.stringify(this.post('details'));
 
@@ -97,7 +98,9 @@ export default class extends Base {
         const unicorn_member: Array<object> = this.post('unicorn_member');
 
         const state: any = await this.unicornModel['addOrUpdate']({
-            id, type, title, subtitle, name, tel, headImg, time, basic, details, unicorn_videos, citys, addtime
+            id, type, title, subtitle, name, tel, headImg,
+            time, basic, details, unicorn_videos, citys,
+            addtime, relevant_information, img
         });
         if (typeof (state) === "number") {
             try {
@@ -122,13 +125,17 @@ export default class extends Base {
         else if (state) {
             try {
                 unicorn_info.map(v => v['unicorn_id'] = id);
-                unicorn_tags.map(v => v['unicorn_id'] = id);
+                const unicornTags = unicorn_tags.map(v => {
+                    return {
+                        unicorn_id: id,
+                        tags_id: v
+                    };
+                });
                 unicorn_member.map(v => v['unicorn_id'] = id);
                 await this.model('unicorn_tags_join').where({ unicorn_id: id }).delete();
                 await this.model('unicorn_info').where({ unicorn_id: id }).delete();
                 await this.model('unicorn_member').where({ unicorn_id: id }).delete();
-                console.log(unicorn_tags)
-                await this.model('unicorn_tags_join').addMany(unicorn_tags);
+                await this.model('unicorn_tags_join').addMany(unicornTags);
                 await this.model('unicorn_info').addMany(unicorn_info);
                 await this.model('unicorn_member').addMany(unicorn_member);
                 this.success(successCode.get(2)['code'], successCode.get(2)['message']);
