@@ -26,13 +26,18 @@ export default class extends Base {
     async getListAction() {
         // const type_id: number = this.post('type_id');
         let data: Array<object> = await this.unicornModel['getList']();
-        data = data.map(v => {
-            v['details'] = JSON.parse(v['details'])
-            v['unicorn_videos'] = JSON.parse(v['unicorn_videos'])
-            v['unicorn_tags'] = v['unicorn_tags'].map(v => v.id)
-            v['unicorn_city'] = v['citys'].split(',')
-            return v
-        })
+        try {
+            data = data.map(v => {
+                v['details'] = JSON.parse(v['details'])
+                v['unicorn_videos'] = JSON.parse(v['unicorn_videos'])
+                v['unicorn_tags'] = v['unicorn_tags'].map(v => v.id)
+                v['unicorn_city'] = v['citys'].split(',')
+                return v
+            });
+        } catch (e) {
+            console.log(e);
+        }
+        
         return this.success(data, successCode.get(4)['message']);
     }
 

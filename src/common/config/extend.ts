@@ -6,9 +6,9 @@ const websocket = require('think-websocket');
 import { think } from 'thinkjs';
 
 module.exports = [
-  view, // make application support view
-  model(think.app),
-  websocket(think.app),
-  cache,
-  session
+    view, // make application support view
+    model(think.app),
+    websocket(think.app),
+    cache,
+    session
 ];

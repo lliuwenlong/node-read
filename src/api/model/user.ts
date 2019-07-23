@@ -43,7 +43,7 @@ export default class extends think.Model {
     }
 
     async getUserList(where: object): Promise<object[]> {
-        const userList: object[] = await this.field('id, username, addTime, vip').where(where).select();
+        const userList: object[] = await this.table('user_app').field('id, username, name, tel, addTime, vip').where(where).select();
         return userList;
     }
 

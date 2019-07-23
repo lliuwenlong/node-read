@@ -12,6 +12,7 @@
   "dependencies": {
     "@types/js-md5": "^0.4.2",
     "@types/nodemailer": "^6.1.0",
+    "cos-nodejs-sdk-v5": "^2.5.9",
     "get-pixels": "^3.3.2",
     "js-md5": "^0.7.3",
     "moment": "^2.24.0",

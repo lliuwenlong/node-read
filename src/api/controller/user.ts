@@ -8,6 +8,8 @@ import mailConfig from '../config/mailConfig.js';
 import { mathRand } from '../../common/util/index.js';
 import { errorCode, successCode } from '../../common/codeConfig/codeConfig';
 import {filterObject} from '../../common/util/index';
+import fs from 'fs';
+import path from 'path';
 import md5 from 'js-md5';
 import moment from 'moment';
 import {OrderList} from '../Interfaces/user';
@@ -304,5 +306,34 @@ export default class extends think.Controller {
             mentmethod
         }));
         return this.success(list, successCode.get(4)['message']);
+    }
+
+    getVedioAction () {
+        const response = this.ctx.res;
+        const filePath = path.join(think.ROOT_PATH, 'public/uploadVdeio/1563502852316mda-hg1h1h86v0p5qzca (2).mp4');
+        response.writeHead(200, {'Content-Type': 'video/mp4'});
+        fs.createReadStream(filePath).pipe(response);
+    }
+
+    uploadVedioAction () {
+        const filePath = path.join(think.ROOT_PATH, 'public/uploadVdeio/1563502713477mda-hb1rh5e6wcdszu98.mp4');
+        console.log(filePath);
+        this.ctx.attachment(filePath);
+          // 实现文件下载 
+        // const req = this.ctx.req;
+        // const res = this.ctx.res;
+        // const filePath = path.join(think.ROOT_PATH, 'public/uploadVdeio/1563502545219mda-jcvdrtv48sai9kxr.mp4');
+        // var stats = fs.statSync(filePath); 
+        // console.log(stats.size);
+        // if(stats.isFile()){
+        //     res.writeHead(200, {
+        //         'Content-Type': 'application/octet-stream',
+        //         'Content-Disposition': 'attachment; filename=aaa.mp4',
+        //         'Content-Length': stats.size
+        //     });
+        //     fs.createReadStream(filePath).pipe(res);
+        // } else {
+        //     res.end(404);
+        // }
     }
 };

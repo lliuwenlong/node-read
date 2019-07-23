@@ -4,6 +4,8 @@ import fs from 'fs';
 import getPixels from 'get-pixels';
 import { filterObject } from '../../common/util/index';
 import { successCode, errorCode } from '../../common/codeConfig/codeConfig';
+import COS from 'cos-nodejs-sdk-v5';
+
 import {
     API_UPLOADFILE_SUCCESS,
     API_UPLOADFILE_ERROR,
@@ -89,7 +91,7 @@ export default class extends Base {
      * @apiParam {string} hash 分片唯一名字
      * @apiSampleRequest /api/common/mergeChunkFile
      */
-    mergeChunkFileAction() {
+    async mergeChunkFileAction() {
         const total = this.post('total');
         const hash: string = this.post('hash');
         const name: string = this.post('name');
@@ -114,8 +116,10 @@ export default class extends Base {
                 fs.unlinkSync(`${this.chunkBasePath}/${hash}/${hash}-${i}`);
             }
             fs.rmdirSync(this.chunkBasePath + '/' + hash);
+            const fileData= await this.cosUploadFileAction(fileName, `${this.vdeioBasePath}/${fileName}`);
             return this.success(
-                `uploadVdeio/${fileName}`,
+                // `uploadVdeio/${fileName}`,
+                fileData.Location,
                 successCode.get(API_UPLOADFILE_SUCCESS)['message']
             );
         } catch (e) {
@@ -138,18 +142,18 @@ export default class extends Base {
     async getCityAction() {
         try {
             const pid = this.post('pid');
-            let where=pid?{ pid }:{};
+            let where = pid ? { pid } : {};
             let data = await this.model('city').where(where).select();
-            if(!pid){
+            if (!pid) {
                 for (const key in data) {
                     for (const key1 in data) {
-                        if(data[key].pid==data[key1].id){
-                            data[key1].children=data[key1].children?data[key1].children.concat([data[key]]):[data[key]];
+                        if (data[key].pid == data[key1].id) {
+                            data[key1].children = data[key1].children ? data[key1].children.concat([data[key]]) : [data[key]];
                             break;
                         }
                     }
                 }
-                data=data[0];
+                data = data[0];
             }
             return this.success(data, successCode.get(4)['message'])
         } catch (error) {
@@ -179,7 +183,7 @@ export default class extends Base {
         } else {
             return 0;
         }
-        
+
     }
 
     /**
@@ -247,5 +251,29 @@ export default class extends Base {
                 resolve(pixels.shape.slice());
             })
         });
+    }
+
+    async cosUploadFileAction(fileName: string, path: string) {
+        const cos = new COS({
+            AppId: "1257894218",
+            SecretId: "AKIDEJzXt7HpHQROCsEgfSxGXfcOzIWfoJm4",
+            SecretKey: "FJ0Z4OfmPr0DH9sQnkW5ZsziJj2GTbXJ",
+        });
+        // 添加
+        return new Promise((resolve, reject) => {
+            cos.sliceUploadFile({
+                Bucket: 'test-1257894218',
+                Region: 'ap-chengdu',
+                Key: fileName,
+                FilePath: path,
+            }, function (error: any, data: any) {
+                if (!error) {
+                    resolve(data)
+                } else {
+                    reject();
+                }
+            });
+        });
+        // console.log(res);
     }
 };
