@@ -122,7 +122,6 @@ export default class extends Base {
                 await this.model('unicorn_member').addMany(unicorn_member);
                 this.success(`${state}`, successCode.get(1)['message']);
             } catch (e) {
-                console.log(e);
                 think.logger.error(e);
                 this.fail(errorCode.get(1)['code'], errorCode.get(1)['message']);
             }
@@ -145,7 +144,6 @@ export default class extends Base {
                 await this.model('unicorn_member').addMany(unicorn_member);
                 this.success(successCode.get(2)['code'], successCode.get(2)['message']);
             } catch (e) {
-                console.log(e);
                 think.logger.error(e);
                 this.fail(errorCode.get(2)['code'], errorCode.get(2)['message']);
             }
@@ -197,6 +195,7 @@ export default class extends Base {
         }
 
     }
+
     /**
      *
      * @api {post} /api/unicorn/getGrab 独角兽已抢占

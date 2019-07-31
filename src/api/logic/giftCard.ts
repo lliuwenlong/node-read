@@ -7,12 +7,6 @@ export default class extends think.Logic {
             name: {
                 string: true
             },
-            purchaseInstructions: {
-                string: true
-            },
-            process: {
-                string: true
-            },
             content: {
                 string: true
             },
@@ -21,6 +15,9 @@ export default class extends think.Logic {
             },
             isMod: {
                 boolean: true
+            },
+            num: {
+                int: true
             },
             id: {
                 int: true

@@ -65,12 +65,15 @@ export default class extends Base {
         const lower_price: number[] = this.post('lower_price');
         const intermediate_price: object[] = this.post('intermediate_price');
         const senior_price: number[] = this.post('senior_price');
+        const audio_audition: number = this.post('audio_audition');
+        const video_audition: number = this.post('video_audition');
 
         let state: any = await this.curriculumModel['addOrUpdate']({
             id, type_id, title, subtitle,
             content, addtime, price, cover,
             is_setmeal, lower_price,
-            intermediate_price, senior_price
+            intermediate_price, senior_price,
+            audio_audition, video_audition
         });
         const curriculum = this.controller('common', 'api');
         if (typeof (state) === "number") {

@@ -5,7 +5,7 @@ import getPixels from 'get-pixels';
 import { filterObject } from '../../common/util/index';
 import { successCode, errorCode } from '../../common/codeConfig/codeConfig';
 import COS from 'cos-nodejs-sdk-v5';
-
+import ffmpeg from 'ffmpeg';
 import {
     API_UPLOADFILE_SUCCESS,
     API_UPLOADFILE_ERROR,
@@ -20,9 +20,10 @@ interface AddCurriculumListParam {
     readonly video: string;
 }
 
-export default class extends Base {
+export default class extends think.Controller {
     private chunkBasePath: string = path.join(think.ROOT_PATH, 'public/~uploads');
     private vdeioBasePath: string = path.join(think.ROOT_PATH, 'public/uploadVdeio');
+    private vdeioImgBasePath: string = path.join(think.ROOT_PATH, 'public/uploadVdeioImg');
     private curriculumListModel: object = this.model('curriculumList');
 
     /**
@@ -95,7 +96,9 @@ export default class extends Base {
         const total = this.post('total');
         const hash: string = this.post('hash');
         const name: string = this.post('name');
-        const fileName: string = `${new Date().getTime()}${name}`;
+        const fileName: string = `${new Date().getTime()}${encodeURIComponent(name)}`;
+        const type: string = this.post('type');
+
         if (!think.isDirectory(this.vdeioBasePath)) {
             think.mkdir(this.vdeioBasePath);
         }
@@ -116,13 +119,18 @@ export default class extends Base {
                 fs.unlinkSync(`${this.chunkBasePath}/${hash}/${hash}-${i}`);
             }
             fs.rmdirSync(this.chunkBasePath + '/' + hash);
+            let videoData = {};
+            if (type === 'video' || type === 'audio') {
+                videoData = await this.getVideoDataAction(`${this.vdeioBasePath}/${fileName}`, this.vdeioImgBasePath, type);
+            }
             const fileData= await this.cosUploadFileAction(fileName, `${this.vdeioBasePath}/${fileName}`);
-            return this.success(
-                // `uploadVdeio/${fileName}`,
-                fileData.Location,
-                successCode.get(API_UPLOADFILE_SUCCESS)['message']
-            );
+            return this.success({
+                path: fileData['Location'],
+                courpath: videoData['courpath'],
+                duration: videoData['duration']
+            }, successCode.get(API_UPLOADFILE_SUCCESS)['message']);
         } catch (e) {
+            console.log(e);
             return this.fail(
                 API_UPLOADFILE_ERROR,
                 errorCode.get(API_UPLOADFILE_ERROR)['message']
@@ -275,5 +283,36 @@ export default class extends Base {
             });
         });
         // console.log(res);
+    }
+
+    async getVideoDataAction(videoPath: string, outPutPath: string, type: string){
+        const process = await new ffmpeg(videoPath);
+        return new Promise((resolve, reject) => {
+            if (type === 'audio') {
+                resolve({
+                    duration: process.metadata.duration.seconds
+                });
+            }
+            if (type === 'video') {
+                process.fnExtractFrameToJPG(outPutPath, {
+                    number : 1,
+                    file_name : 'my_frame_%t_%s'
+                }, function (error: any, files: any) {
+                    if (!error) {
+                        const path = typeof files === 'string'
+                            ? files
+                            : files[files.length - 1]
+                        const courpath = path.substr(path.lastIndexOf('my_frame'));
+                        resolve({
+                            courpath: `uploadVdeioImg/${courpath}`,
+                            duration: process.metadata.duration.seconds
+                        });
+                    } else {
+                        reject();
+                    }
+                });
+            }
+            
+        });
     }
 };

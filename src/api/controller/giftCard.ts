@@ -39,8 +39,7 @@ export default class extends Base {
      */
     async addGiftCardAction(): Promise<boolean> {
         const name: string = this.post('name');
-        const purchaseInstructions: string = this.post('purchaseInstructions');
-        const process: string = this.post('process');
+        const num: number = this.post('num');
         const coverPhoto: string = this.post('coverPhoto');
         const date: string = moment().format('YYYY-MM-DD');
         const content: string = this.post('content');
@@ -49,11 +48,10 @@ export default class extends Base {
         if (!isMod) {
             const isAddSuccess: boolean = await this.giftCardModel['addGiftCard']({
                 name,
-                purchase_instructions: purchaseInstructions,
-                process,
                 cover_photo: coverPhoto,
                 addTime: date,
-                content
+                content,
+                num
             });
             return isAddSuccess
                 ? this.success(null, successCode.get(1)['message'])
@@ -61,10 +59,9 @@ export default class extends Base {
         } else {
             let param = {
                 name,
-                purchase_instructions: purchaseInstructions,
-                process,
                 cover_photo: coverPhoto,
-                content
+                content,
+                num
             };
             const isUpdateSuccess: boolean = await this.giftCardModel['updateGiftCard'](filterObject(param), id);
             return isUpdateSuccess
